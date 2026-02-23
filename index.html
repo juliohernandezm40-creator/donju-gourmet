@@ -7,14 +7,20 @@
   <meta name="description" content="DonJu Gourmet: postres 180 ml por encargo. Cierre 18:00, entrega al día siguiente. La Florida, Macul, Peñalolén, Puente Alto, La Granja." />
   <meta name="theme-color" content="#12121a" />
 
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+
   <!-- Open Graph -->
   <meta property="og:title" content="DonJu Gourmet — Pedidos por WhatsApp" />
   <meta property="og:description" content="Postres 180 ml · Cierre 18:00 · Entrega al día siguiente · La Florida y alrededores" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://juliohernandezm40-creator.github.io/donju-gourmet/" />
+  <meta property="og:image" content="https://juliohernandezm40-creator.github.io/donju-gourmet/logo.jpg" />
+  <meta property="og:image:width" content="1024" />
+  <meta property="og:image:height" content="1024" />
 
-  <!-- Simple favicon via emoji (no file needed) -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍰</text></svg>">
+  <!-- Favicon -->
+  <link rel="icon" href="logo.jpg">
 
   <!-- SEO structured data (basic) -->
   <script type="application/ld+json">
@@ -33,7 +39,6 @@
     :root{
       --bg:#0b0b10;
       --panel:#12121a;
-      --panel2:#161621;
       --stroke:rgba(255,255,255,.10);
       --stroke2:rgba(255,255,255,.16);
       --text:#f3f3f7;
@@ -41,9 +46,7 @@
       --accent:#d7b46a;
       --accent2:#6ad7b4;
       --danger:#ff6b6b;
-      --ok:#5dd39e;
       --shadow: 0 18px 45px rgba(0,0,0,.40);
-      --r:18px;
       --r2:22px;
       --max:1020px;
     }
@@ -51,7 +54,7 @@
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       background:
         radial-gradient(1100px 750px at 12% 0%, rgba(88,70,170,.35) 0%, rgba(11,11,16,1) 55%),
         radial-gradient(900px 600px at 90% 20%, rgba(215,180,106,.14) 0%, rgba(11,11,16,1) 60%),
@@ -60,6 +63,7 @@
     }
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:22px}
+
     .topbar{
       position:sticky; top:12px; z-index:50;
       display:flex; align-items:center; justify-content:space-between;
@@ -73,19 +77,18 @@
     }
     .brand{display:flex; align-items:center; gap:12px; min-width:0}
     .logo{
-      width:42px; height:42px; border-radius:14px;
+      width:44px; height:44px; border-radius:14px;
       border:1px solid rgba(215,180,106,.35);
-      background:
-        radial-gradient(18px 18px at 30% 30%, rgba(215,180,106,.35), transparent 65%),
-        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-      display:grid; place-items:center;
+      background:rgba(255,255,255,.02);
+      overflow:hidden;
       flex:0 0 auto;
     }
-    .logo span{font-size:22px}
+    .logo img{width:100%; height:100%; object-fit:cover}
     .brandText{min-width:0}
     .brandText h1{margin:0; font-size:16px; letter-spacing:.3px}
     .brandText small{display:block; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
     .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+
     .btn{
       border:1px solid var(--stroke2);
       background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
@@ -93,10 +96,10 @@
       padding:10px 12px;
       border-radius:14px;
       cursor:pointer;
-      font-weight:800;
+      font-weight:900;
       text-decoration:none;
       display:inline-flex; align-items:center; gap:8px;
-      transition: transform .06s ease, border-color .2s ease, background .2s ease;
+      transition: transform .06s ease;
       user-select:none;
     }
     .btn:active{transform:scale(.98)}
@@ -108,6 +111,7 @@
       background:transparent;
       border-color: var(--stroke);
     }
+
     .pill{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px;
@@ -118,6 +122,7 @@
       font-size:12px;
       white-space:nowrap;
     }
+
     .hero{
       margin-top:16px;
       padding:18px;
@@ -130,11 +135,11 @@
     }
     .hero h2{margin:0; font-size:22px; letter-spacing:.2px}
     .hero p{margin:0; color:var(--muted); line-height:1.45}
-    .heroRow{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
+    .heroRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+
     .grid{display:grid; gap:16px; margin-top:16px}
     @media(min-width:980px){ .grid.cols2{grid-template-columns: 1.1fr .9fr} }
+
     .card{
       border-radius:var(--r2);
       border:1px solid var(--stroke);
@@ -146,15 +151,7 @@
     .card h3{margin:0 0 10px 0; font-size:16px}
     .muted{color:var(--muted)}
     .hr{height:1px; background:rgba(255,255,255,.10); margin:14px 0}
-    .badges{display:flex; gap:8px; flex-wrap:wrap}
-    .badge{
-      font-size:12px;
-      color:var(--muted);
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.03);
-      padding:6px 10px;
-      border-radius:999px;
-    }
+
     .note{
       padding:10px 12px;
       border-radius:16px;
@@ -174,7 +171,7 @@
       line-height:1.35;
     }
 
-    /* Menu cards */
+    /* Menu */
     .menuList{display:grid; gap:12px}
     .item{
       display:grid;
@@ -198,16 +195,7 @@
     .itemTitle{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
     .itemTitle strong{font-size:14px}
     .desc{color:var(--muted); font-size:12px; line-height:1.35; margin-top:4px}
-    .priceTag{
-      font-weight:900;
-      color:var(--accent);
-      font-size:13px;
-      white-space:nowrap;
-    }
-    .qty{
-      display:flex; align-items:center; gap:8px;
-      justify-content:flex-end;
-    }
+    .priceTag{font-weight:950; color:var(--accent); font-size:13px; white-space:nowrap}
     .qty input{
       width:84px;
       padding:10px 10px;
@@ -216,7 +204,7 @@
       background:rgba(0,0,0,.25);
       color:var(--text);
       outline:none;
-      font-weight:800;
+      font-weight:900;
     }
 
     /* Form */
@@ -235,7 +223,12 @@
     @media(min-width:740px){ .row.cols2{grid-template-columns:1fr 1fr} }
     .mini{font-size:12px; color:var(--muted); margin-top:6px}
 
-    /* Cart drawer */
+    /* Combo fields */
+    #comboBox{display:none}
+    #comboFields{display:grid; gap:12px}
+    @media(min-width:740px){ #comboFields{grid-template-columns:1fr 1fr} }
+
+    /* Drawer */
     .drawerBackdrop{
       position:fixed; inset:0;
       background:rgba(0,0,0,.55);
@@ -263,7 +256,6 @@
       display:flex; align-items:center; justify-content:space-between; gap:12px;
       border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .drawerHeader strong{font-size:14px}
     .drawerBody{padding:14px; overflow:auto}
     .cartLine{
       display:flex; justify-content:space-between; gap:10px;
@@ -272,7 +264,7 @@
       color:var(--muted);
       font-size:13px;
     }
-    .cartLine b{color:var(--text); font-weight:800}
+    .cartLine b{color:var(--text); font-weight:900}
     .drawerFooter{
       padding:14px;
       border-top:1px solid rgba(255,255,255,.08);
@@ -280,7 +272,7 @@
     }
     .total{
       display:flex; justify-content:space-between; align-items:center;
-      font-weight:900;
+      font-weight:950;
       color:var(--text);
     }
     .total span:last-child{color:var(--accent)}
@@ -308,7 +300,7 @@
       display:grid; place-items:center;
       border:1px solid rgba(215,180,106,.45);
       background:rgba(215,180,106,.10);
-      font-weight:900;
+      font-weight:950;
     }
     .floatBar .left .summary{
       min-width:0;
@@ -334,16 +326,9 @@
     }
     .toast b{display:block}
     .toast small{color:var(--muted)}
+
     footer{padding:26px 0 110px; color:var(--muted); font-size:12px}
-    .faq details{
-      border:1px solid var(--stroke);
-      border-radius:16px;
-      background:rgba(255,255,255,.03);
-      padding:10px 12px;
-      margin-top:10px;
-    }
-    .faq summary{cursor:pointer; font-weight:900}
-    .faq p{margin:8px 0 0 0; color:var(--muted)}
+
     @media(prefers-reduced-motion: reduce){
       *{scroll-behavior:auto}
       .drawer{transition:none}
@@ -356,7 +341,7 @@
   <div class="wrap">
     <div class="topbar">
       <div class="brand">
-        <div class="logo" aria-hidden="true"><span>🍰</span></div>
+        <div class="logo" aria-hidden="true"><img src="logo.jpg" alt="DonJu Gourmet"></div>
         <div class="brandText">
           <h1>DonJu Gourmet</h1>
           <small>Pedidos por encargo · Cierre 18:00 · Entrega al día siguiente · 180 ml</small>
@@ -391,10 +376,10 @@
 
         <div class="hr"></div>
 
-        <div id="comboBox" style="display:none;">
+        <div id="comboBox">
           <h3>Sabores del combo</h3>
           <p class="muted" style="margin-top:-6px;">Puedes repetir sabores. Si lo dejas en blanco, lo coordinamos por WhatsApp.</p>
-          <div id="comboFields" class="row cols2"></div>
+          <div id="comboFields"></div>
         </div>
 
         <div class="hr"></div>
@@ -405,45 +390,22 @@
       </section>
 
       <section class="card">
-        <h3>Cómo funciona</h3>
-        <div class="badges" style="margin-bottom:10px;">
-          <span class="badge">Cierre 18:00</span>
-          <span class="badge">Entrega día siguiente</span>
-          <span class="badge">Transferencia / Efectivo</span>
-          <span class="badge">Delivery a coordinar</span>
-        </div>
-
-        <p class="muted">
-          Trabajamos con <b>preventa</b> para asegurar frescura y orden de producción.
-          Si el pedido es con delivery, indícanos la dirección para coordinar.
-        </p>
-
-        <div class="hr"></div>
-
         <h3>Resumen en vivo</h3>
         <p class="muted" style="margin-top:-6px;">Tu carrito se guarda automáticamente (si cierras el navegador, no se pierde).</p>
         <div id="liveSummary" class="muted"></div>
 
         <div class="hr"></div>
 
-        <div class="faq">
-          <h3>FAQ rápido</h3>
-          <details>
-            <summary>¿Tamaño?</summary>
-            <p>Vasos de <b>180 ml</b>.</p>
-          </details>
-          <details>
-            <summary>¿Cuándo entregan?</summary>
-            <p>Cierre <b>18:00</b> y entrega <b>al día siguiente</b> (horario a coordinar).</p>
-          </details>
-          <details>
-            <summary>¿Transferencia?</summary>
-            <p>Los datos de transferencia se envían por WhatsApp al confirmar tu pedido.</p>
-          </details>
-          <details>
-            <summary>¿Conservación?</summary>
-            <p>Refrigerado. Ideal consumir dentro de 48–72 horas.</p>
-          </details>
+        <h3>FAQ rápido</h3>
+        <p class="muted"><b>¿Tamaño?</b> Vasos de 180 ml.</p>
+        <p class="muted"><b>¿Cuándo entregan?</b> Cierre 18:00 y entrega al día siguiente (horario a coordinar).</p>
+        <p class="muted"><b>¿Transferencia?</b> Los datos se envían por WhatsApp al confirmar.</p>
+        <p class="muted"><b>Conservación:</b> Refrigerado. Ideal 48–72 horas.</p>
+
+        <div class="hr"></div>
+
+        <div class="note">
+          Pagos: transferencia o efectivo · Delivery: a coordinar según dirección
         </div>
       </section>
     </div>
@@ -517,9 +479,9 @@
           <div class="warn" id="warnBox" style="display:none"></div>
         </div>
         <div style="display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap">
-          <button class="btn ghost" id="btnCopy">Copiar pedido</button>
-          <button class="btn ghost" id="btnClear">Limpiar</button>
-          <button class="btn primary" id="btnSend">Enviar por WhatsApp</button>
+          <button class="btn ghost" id="btnCopy" type="button">Copiar pedido</button>
+          <button class="btn ghost" id="btnClear" type="button">Limpiar</button>
+          <button class="btn primary" id="btnSend" type="button">Enviar por WhatsApp</button>
         </div>
       </div>
     </section>
@@ -536,7 +498,7 @@
   <aside class="drawer" id="drawer" aria-label="Carrito">
     <div class="drawerHeader">
       <strong>Carrito</strong>
-      <button class="btn ghost" id="btnCloseCart">Cerrar</button>
+      <button class="btn ghost" id="btnCloseCart" type="button">Cerrar</button>
     </div>
     <div class="drawerBody">
       <div id="cartLines"></div>
@@ -551,19 +513,19 @@
         <span>Total</span>
         <span id="cartTotal">$0</span>
       </div>
-      <button class="btn primary" onclick="document.getElementById('pedido').scrollIntoView({behavior:'smooth'})">Ir a datos del pedido</button>
+      <button class="btn primary" type="button" onclick="document.getElementById('pedido').scrollIntoView({behavior:'smooth'})">Ir a datos del pedido</button>
     </div>
   </aside>
 
-  <!-- Floating bottom bar -->
+  <!-- Floating bar -->
   <div class="floatBar" id="floatBar">
     <div class="left">
       <div class="count" id="floatCount">0</div>
       <div class="summary" id="floatSummary">Sin productos seleccionados.</div>
     </div>
     <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
-      <button class="btn" id="btnWhatsAppQuick">WhatsApp</button>
-      <button class="btn primary" id="btnOpenCart2">Ver carrito</button>
+      <button class="btn" id="btnWhatsAppQuick" type="button">WhatsApp</button>
+      <button class="btn primary" id="btnOpenCart2" type="button">Ver carrito</button>
     </div>
   </div>
 
@@ -574,11 +536,9 @@
   </div>
 
   <script>
-    // ===== CONFIG =====
     const WHATSAPP_NUMBER = "56956059401";
-    const STORAGE_KEY = "donju_cart_v1";
+    const STORAGE_KEY = "donju_cart_v2";
 
-    // Productos (precios por ítem)
     const PRODUCTS = [
       { id: "p1", name: "Tiramisú", desc: "Cremoso, con café y cacao. Sabor clásico DonJu.", price: 2000, type: "single" },
       { id: "p2", name: "Cheesecake de maracuyá", desc: "Dulce y ácido balanceado, toque tropical.", price: 2000, type: "single" },
@@ -592,7 +552,6 @@
     const SINGLES = PRODUCTS.filter(p => p.type === "single");
     const COMBOS = PRODUCTS.filter(p => p.type === "combo");
 
-    // ===== DOM =====
     const yearEl = document.getElementById("year");
     const menuList = document.getElementById("menuList");
     const comboBox = document.getElementById("comboBox");
@@ -603,428 +562,4 @@
     const entregaHint = document.getElementById("entregaHint");
     const addressBlock = document.getElementById("addressBlock");
     const diaEl = document.getElementById("dia");
-    const diaHint = document.getElementById("diaHint");
-
-    const btnSend = document.getElementById("btnSend");
-    const btnCopy = document.getElementById("btnCopy");
-    const btnClear = document.getElementById("btnClear");
-    const warnBox = document.getElementById("warnBox");
-
-    // Drawer
-    const drawer = document.getElementById("drawer");
-    const drawerBackdrop = document.getElementById("drawerBackdrop");
-    const btnOpenCart = document.getElementById("btnOpenCart");
-    const btnOpenCart2 = document.getElementById("btnOpenCart2");
-    const btnCloseCart = document.getElementById("btnCloseCart");
-    const cartLines = document.getElementById("cartLines");
-    const cartTotal = document.getElementById("cartTotal");
-
-    // Floating bar
-    const floatCount = document.getElementById("floatCount");
-    const floatSummary = document.getElementById("floatSummary");
-    const btnWhatsAppQuick = document.getElementById("btnWhatsAppQuick");
-
-    // Toast
-    const toast = document.getElementById("toast");
-    const toastTitle = document.getElementById("toastTitle");
-    const toastMsg = document.getElementById("toastMsg");
-
-    yearEl.textContent = new Date().getFullYear();
-
-    // ===== Helpers =====
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-    function money(n){ return `$${Number(n||0).toLocaleString("es-CL")}`; }
-    function getQty(id){
-      const el = document.getElementById(id);
-      return parseInt((el?.value || "0"), 10) || 0;
-    }
-    function setQty(id, val){
-      const el = document.getElementById(id);
-      if(el) el.value = String(Math.max(0, val|0));
-    }
-    function showToast(title, msg){
-      toastTitle.textContent = title;
-      toastMsg.textContent = msg;
-      toast.style.display = "block";
-      clearTimeout(window.__t);
-      window.__t = setTimeout(()=> toast.style.display = "none", 2300);
-    }
-
-    // ===== Render menu =====
-    PRODUCTS.forEach(p => {
-      const row = document.createElement("div");
-      row.className = "item";
-      row.innerHTML = `
-        <div class="thumb" aria-hidden="true"></div>
-        <div>
-          <div class="itemTitle">
-            <strong>${escapeHtml(p.name)}</strong>
-            <span class="priceTag">${money(p.price)}</span>
-          </div>
-          <div class="desc">${escapeHtml(p.desc)}</div>
-        </div>
-        <div class="qty">
-          <input id="${p.id}" type="number" min="0" value="0" inputmode="numeric" aria-label="Cantidad ${escapeHtml(p.name)}" />
-        </div>
-      `;
-      menuList.appendChild(row);
-    });
-
-    // ===== Persistence (localStorage) =====
-    function saveState(){
-      const state = {
-        qty: Object.fromEntries(PRODUCTS.map(p => [p.id, getQty(p.id)])),
-        form: {
-          nombre: document.getElementById("nombre").value || "",
-          telefono: document.getElementById("telefono").value || "",
-          comuna: document.getElementById("comuna").value || "La Florida",
-          entrega: document.getElementById("entrega").value || "Delivery (a coordinar)",
-          dia: document.getElementById("dia").value || "",
-          horario: document.getElementById("horario").value || "",
-          direccion: document.getElementById("direccion").value || "",
-          notas: document.getElementById("notas").value || "",
-          pago: document.getElementById("pago").value || "Transferencia"
-        },
-        picks: Array.from(comboFields.querySelectorAll("select")).map(s => s.value || "")
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-    function loadState(){
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return;
-      try{
-        const state = JSON.parse(raw);
-        if(state?.qty){
-          for(const [id,val] of Object.entries(state.qty)){
-            setQty(id, val);
-          }
-        }
-        if(state?.form){
-          for(const [k,v] of Object.entries(state.form)){
-            const el = document.getElementById(k);
-            if(el) el.value = v;
-          }
-        }
-      }catch(e){}
-    }
-
-    // ===== Combo fields =====
-    function buildComboFields(totalPicks, prevValues){
-      comboFields.innerHTML = "";
-      for(let i=0; i<totalPicks; i++){
-        const wrap = document.createElement("div");
-        wrap.innerHTML = `
-          <label>Selección ${i+1}</label>
-          <select id="pick_${i}">
-            <option value="">(Elegir sabor)</option>
-            ${SINGLES.map(s => `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`).join("")}
-          </select>
-        `;
-        comboFields.appendChild(wrap);
-      }
-      const selects = comboFields.querySelectorAll("select");
-      selects.forEach((sel, idx) => { if(prevValues?.[idx]) sel.value = prevValues[idx]; });
-    }
-
-    function updateComboUI(){
-      let totalPicks = 0;
-      COMBOS.forEach(c => totalPicks += getQty(c.id) * c.picks);
-
-      if(totalPicks <= 0){
-        comboBox.style.display = "none";
-        comboFields.innerHTML = "";
-        return;
-      }
-      comboBox.style.display = "block";
-      const prev = Array.from(comboFields.querySelectorAll("select")).map(s => s.value || "");
-      buildComboFields(totalPicks, prev);
-
-      // listen selects changes for persistence
-      comboFields.querySelectorAll("select").forEach(sel => sel.addEventListener("change", () => {
-        saveState(); renderAll();
-      }));
-    }
-
-    function comboSummary(){
-      if(comboBox.style.display === "none") return "";
-      const picks = Array.from(comboFields.querySelectorAll("select"))
-        .map(s => (s.value || "").trim())
-        .filter(Boolean);
-
-      if(picks.length === 0) return "Sabores combo: (sin seleccionar, a coordinar por WhatsApp)";
-
-      const count = {};
-      picks.forEach(p => count[p] = (count[p]||0)+1);
-      return "Sabores combo: " + Object.entries(count).map(([n,c]) => `${c} x ${n}`).join(" · ");
-    }
-
-    // ===== Delivery UI =====
-    function updateEntregaUI(){
-      const isDelivery = entregaEl.value.toLowerCase().includes("delivery");
-      addressBlock.style.display = isDelivery ? "block" : "none";
-      entregaHint.textContent = isDelivery
-        ? "Si es delivery, agrega dirección para coordinar."
-        : "Si es retiro, coordinamos punto y hora por WhatsApp.";
-    }
-
-    // ===== Suggested “next day” if empty =====
-    function suggestNextDayIfEmpty(){
-      if((diaEl.value || "").trim().length > 0) return;
-      const now = new Date();
-      const tomorrow = new Date(now.getTime() + 24*60*60*1000);
-      const dd = String(tomorrow.getDate()).padStart(2,"0");
-      const mm = String(tomorrow.getMonth()+1).padStart(2,"0");
-      diaEl.value = `${dd}-${mm}`;
-    }
-
-    function updateDiaHint(){
-      const v = (diaEl.value||"").trim().toLowerCase();
-      if(v.includes("hoy")){
-        diaHint.textContent = "Recuerda: cierre 18:00 y entrega al día siguiente ✅";
-      }else{
-        diaHint.textContent = "";
-      }
-    }
-
-    // ===== Cart calc/render =====
-    function buildOrder(){
-      const lines = [];
-      let total = 0;
-      let countItems = 0;
-      PRODUCTS.forEach(p => {
-        const q = getQty(p.id);
-        if(q > 0){
-          const sub = q * p.price;
-          total += sub;
-          countItems += q;
-          lines.push({ name:p.name, qty:q, sub });
-        }
-      });
-      return { lines, total, countItems };
-    }
-
-    function renderCartDrawer(order){
-      cartLines.innerHTML = "";
-      if(order.lines.length === 0){
-        cartLines.innerHTML = `<div class="muted">Aún no seleccionas productos.</div>`;
-      }else{
-        order.lines.forEach(l => {
-          const div = document.createElement("div");
-          div.className = "cartLine";
-          div.innerHTML = `<div><b>${escapeHtml(l.name)}</b><div class="muted">x${l.qty}</div></div><div>${money(l.sub)}</div>`;
-          cartLines.appendChild(div);
-        });
-      }
-      cartTotal.textContent = money(order.total);
-    }
-
-    function renderLiveSummary(order){
-      if(order.lines.length === 0){
-        liveSummary.innerHTML = `<div class="muted">Aún no seleccionas productos.</div>`;
-      }else{
-        const top = order.lines.slice(0,4).map(l => `${l.name} x${l.qty}`).join(" · ");
-        const extra = order.lines.length > 4 ? ` · +${order.lines.length-4} más` : "";
-        liveSummary.innerHTML = `
-          <div><b>Total:</b> <span style="color:var(--accent); font-weight:900;">${money(order.total)}</span></div>
-          <div class="mini">${escapeHtml(top + extra)}</div>
-        `;
-      }
-      floatCount.textContent = String(order.countItems);
-      floatSummary.textContent = order.lines.length ? `Total ${money(order.total)} · ${order.lines.length} ítems` : "Sin productos seleccionados.";
-    }
-
-    function renderAll(){
-      updateEntregaUI();
-      updateDiaHint();
-      const order = buildOrder();
-      renderLiveSummary(order);
-      renderCartDrawer(order);
-      saveState();
-    }
-
-    // ===== Drawer controls =====
-    function openDrawer(){
-      drawerBackdrop.style.display = "block";
-      drawer.classList.add("open");
-    }
-    function closeDrawer(){
-      drawerBackdrop.style.display = "none";
-      drawer.classList.remove("open");
-    }
-
-    // ===== Build WhatsApp message =====
-    function buildWhatsAppMessage(){
-      const nombre = (document.getElementById("nombre").value || "").trim() || "(sin nombre)";
-      const telefono = (document.getElementById("telefono").value || "").trim();
-      const comuna = document.getElementById("comuna").value;
-      const entrega = document.getElementById("entrega").value;
-      const dia = (document.getElementById("dia").value || "").trim() || "(sin fecha)";
-      const horario = (document.getElementById("horario").value || "").trim() || "(sin horario)";
-      const direccion = (document.getElementById("direccion").value || "").trim();
-      const notas = (document.getElementById("notas").value || "").trim();
-      const pago = document.getElementById("pago").value;
-
-      const order = buildOrder();
-
-      if(order.lines.length === 0){
-        return { ok:false, error:"Te falta elegir al menos 1 ítem (cantidad mayor a 0)." };
-      }
-      const isDelivery = entrega.toLowerCase().includes("delivery");
-      if(isDelivery && !direccion){
-        return { ok:false, error:"Si es delivery, agrega la dirección para coordinar." };
-      }
-
-      const comboUsed = (getQty("c3") > 0 || getQty("c5") > 0);
-      const comboText = comboUsed ? `\n🎁 ${comboSummary()}\n` : "";
-
-      const linesText = order.lines.map(l => `- ${l.name} x${l.qty} = ${money(l.sub)}`).join("\n");
-
-      const msg =
-`Hola DonJu Gourmet 👋
-Soy: ${nombre}${telefono ? ` (Tel: ${telefono})` : ""}
-
-🧁 Pedido (180 ml):
-${linesText}
-Total: ${money(order.total)}
-${comboText}
-📍 Comuna: ${comuna}
-🚚 Entrega: ${entrega} (a coordinar)
-📅 Día: ${dia}
-🕒 Hora: ${horario}
-${isDelivery ? `🏠 Dirección: ${direccion}\n` : ""}💳 Pago: ${pago}
-${notas ? `📝 Notas: ${notas}\n` : ""}
-
-(Entiendo que los pedidos cierran 18:00 y se entrega al día siguiente ✅)`;
-
-      return { ok:true, msg };
-    }
-
-    // ===== Copy helper =====
-    async function copyText(text){
-      try{
-        await navigator.clipboard.writeText(text);
-        return true;
-      }catch(e){
-        // fallback
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        const ok = document.execCommand("copy");
-        ta.remove();
-        return ok;
-      }
-    }
-
-    // ===== Events =====
-    PRODUCTS.forEach(p => {
-      document.getElementById(p.id).addEventListener("input", () => {
-        updateComboUI();
-        renderAll();
-      });
-    });
-
-    entregaEl.addEventListener("change", () => { updateEntregaUI(); saveState(); });
-    diaEl.addEventListener("input", () => { updateDiaHint(); saveState(); });
-
-    ["nombre","telefono","comuna","dia","horario","direccion","notas","pago"].forEach(id => {
-      const el = document.getElementById(id);
-      el.addEventListener("input", saveState);
-      el.addEventListener("change", saveState);
-    });
-
-    btnOpenCart.addEventListener("click", openDrawer);
-    btnOpenCart2.addEventListener("click", openDrawer);
-    btnCloseCart.addEventListener("click", closeDrawer);
-    drawerBackdrop.addEventListener("click", closeDrawer);
-
-    btnWhatsAppQuick.addEventListener("click", () => {
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola DonJu Gourmet 👋 Quiero hacer un pedido.")}`;
-      window.open(url, "_blank");
-    });
-
-    btnCopy.addEventListener("click", async () => {
-      const built = buildWhatsAppMessage();
-      if(!built.ok){
-        warnBox.style.display = "block";
-        warnBox.textContent = built.error;
-        return;
-      }
-      warnBox.style.display = "none";
-      const ok = await copyText(built.msg);
-      showToast(ok ? "Copiado ✅" : "No se pudo copiar", ok ? "Pedido copiado. Pégalo en WhatsApp." : "Copia manualmente desde el carrito.");
-    });
-
-    btnClear.addEventListener("click", () => {
-      // clear quantities
-      PRODUCTS.forEach(p => setQty(p.id, 0));
-      // clear combos
-      comboFields.innerHTML = "";
-      comboBox.style.display = "none";
-      // clear form (keep comuna as default)
-      ["nombre","telefono","dia","horario","direccion","notas"].forEach(id => document.getElementById(id).value = "");
-      document.getElementById("comuna").value = "La Florida";
-      document.getElementById("entrega").value = "Delivery (a coordinar)";
-      document.getElementById("pago").value = "Transferencia";
-      warnBox.style.display = "none";
-      localStorage.removeItem(STORAGE_KEY);
-      suggestNextDayIfEmpty();
-      updateComboUI();
-      renderAll();
-      showToast("Listo", "Formulario limpio. Arma un pedido nuevo.");
-    });
-
-    btnSend.addEventListener("click", async () => {
-      const built = buildWhatsAppMessage();
-      if(!built.ok){
-        warnBox.style.display = "block";
-        warnBox.textContent = built.error;
-        return;
-      }
-      warnBox.style.display = "none";
-      showToast("¡Listo! ✅", "Abriendo WhatsApp para enviar tu pedido…");
-
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(built.msg)}`;
-
-      // Some browsers block popups: we try open, if fails we copy
-      setTimeout(async () => {
-        const w = window.open(url, "_blank");
-        if(!w){
-          await copyText(built.msg);
-          showToast("Bloqueado por el navegador", "Copié el pedido. Pégalo en WhatsApp.");
-        }
-      }, 350);
-    });
-
-    // ===== Init =====
-    loadState();
-    suggestNextDayIfEmpty();
-    updateEntregaUI();
-    updateDiaHint();
-    updateComboUI();
-
-    // restore picks after combo fields exist
-    (function restorePicks(){
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) { renderAll(); return; }
-      try{
-        const state = JSON.parse(raw);
-        const picks = state?.picks || [];
-        if(picks.length){
-          // ensure fields built
-          const selects = comboFields.querySelectorAll("select");
-          selects.forEach((sel, idx) => { if(picks[idx]) sel.value = picks[idx]; });
-        }
-      }catch(e){}
-      renderAll();
-    })();
-  </script>
-</body>
-</html>
+    const diaHin
