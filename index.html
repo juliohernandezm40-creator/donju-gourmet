@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DonJu Gourmet — Pedidos</title>
-  <meta name="description" content="DonJu Gourmet: postres por encargo. Cierre 18:00, entrega al día siguiente. La Florida, Macul, Peñalolén, Puente Alto, La Granja." />
+  <meta name="description" content="DonJu Gourmet: postres por encargo 180 ml. Cierre 18:00, entrega al día siguiente. La Florida, Macul, Peñalolén, Puente Alto, La Granja." />
 
   <meta property="og:title" content="DonJu Gourmet — Pedidos por WhatsApp" />
   <meta property="og:description" content="Postres 180 ml · Cierre 18:00 · Entrega al día siguiente · La Florida y alrededores" />
@@ -40,13 +40,17 @@
       background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
       color:var(--text); padding:10px 14px; border-radius:14px; cursor:pointer;
       font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+      transition: transform .06s ease;
     }
+    .btn:active{transform: scale(.98)}
     .btn.primary{
       border-color: rgba(215,180,106,.55);
       background:linear-gradient(180deg, rgba(215,180,106,.28), rgba(215,180,106,.08));
     }
+
     .grid{display:grid; gap:16px}
     @media(min-width:900px){ .grid.cols2{grid-template-columns: 1.1fr .9fr} }
+
     .card{
       background:rgba(18,18,26,.75);
       border:1px solid rgba(255,255,255,.08);
@@ -56,11 +60,13 @@
     }
     h2{margin:0 0 10px 0; font-size:16px}
     p{margin:0 0 10px 0; color:var(--muted); line-height:1.45}
+
     .tag{
       display:inline-flex; padding:6px 10px; border-radius:999px;
       border:1px solid rgba(255,255,255,.14); color:var(--muted); font-size:12px;
       margin-right:8px; margin-top:6px;
     }
+
     .menu{display:grid; gap:12px;}
     .item{
       display:grid; grid-template-columns: 1fr auto;
@@ -71,6 +77,7 @@
     .item strong{display:block; margin-bottom:2px}
     .price{font-weight:800; color:var(--accent)}
     .qty{display:flex; align-items:center; gap:8px;}
+
     input[type="number"], input[type="text"], input[type="tel"], select, textarea{
       width:100%;
       padding:10px 12px;
@@ -82,8 +89,10 @@
     }
     textarea{min-height:90px; resize:vertical}
     label{display:block; font-size:12px; color:var(--muted); margin:10px 0 6px}
+
     .row{display:grid; gap:12px}
     @media(min-width:700px){ .row.cols2{grid-template-columns:1fr 1fr} }
+
     .note{
       padding:10px 12px; border-radius:14px;
       background:rgba(106,215,180,.10);
@@ -98,8 +107,9 @@
       color:#ffe1e1;
       font-size:13px;
     }
-    footer{padding:20px 0; color:var(--muted); font-size:12px}
     .hr{height:1px; background:rgba(255,255,255,.10); margin:14px 0}
+
+    /* Combo selector */
     .comboBox{
       margin-top:14px;
       border-radius:16px;
@@ -107,18 +117,65 @@
       border:1px solid rgba(255,255,255,.10);
       background:rgba(255,255,255,.03);
     }
-    .comboGrid{
-      display:grid;
-      gap:10px;
-    }
+    .comboGrid{display:grid; gap:10px;}
     @media(min-width:700px){ .comboGrid.cols2{grid-template-columns:1fr 1fr} }
-    .mini{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:6px;
+    .mini{font-size:12px; color:var(--muted); margin-top:6px;}
+
+    /* Order summary */
+    .summaryList{
+      margin:0; padding-left:18px; color:var(--muted);
     }
+    .summaryTotal{
+      margin-top:10px; font-weight:800; color:var(--accent);
+    }
+
+    /* Floating buttons */
+    .floatWrap{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:999;
+    }
+    .fab{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(18,18,26,.85);
+      color:var(--text);
+      border-radius:999px;
+      padding:12px 14px;
+      font-weight:700;
+      box-shadow: 0 10px 30px rgba(0,0,0,.28);
+      cursor:pointer;
+    }
+    .fab.primary{
+      border-color: rgba(215,180,106,.55);
+      background:linear-gradient(180deg, rgba(215,180,106,.28), rgba(215,180,106,.08));
+    }
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:20px;
+      transform:translateX(-50%);
+      background:rgba(18,18,26,.92);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      padding:12px 14px;
+      color:var(--text);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      display:none;
+      z-index:1000;
+      max-width:92vw;
+    }
+    .toast small{color:var(--muted); display:block; margin-top:2px}
+
+    footer{padding:20px 0; color:var(--muted); font-size:12px}
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <header>
@@ -146,14 +203,24 @@
         <div class="tag">Peñalolén</div>
         <div class="tag">Puente Alto</div>
         <div class="tag">La Granja</div>
+
         <div class="hr"></div>
+
         <p><b>Horarios de entrega:</b><br/>
           Lunes a viernes: desde <b>17:00</b><br/>
           Sábados, domingos y feriados: <b>10:00–20:00</b>
         </p>
+
         <div class="note">
           Pagos disponibles: <b>transferencia</b> o <b>efectivo</b>. Delivery: <b>a coordinar</b>.
         </div>
+
+        <div class="hr"></div>
+
+        <h2>Resumen del pedido</h2>
+        <p class="mini">Se actualiza mientras eliges cantidades.</p>
+        <ul class="summaryList" id="summaryList"></ul>
+        <div class="summaryTotal" id="summaryTotal">Total: $0</div>
       </section>
 
       <section class="card" id="menu">
@@ -162,7 +229,6 @@
 
         <div class="menu" id="menuList"></div>
 
-        <!-- Selector de sabores (aparece solo si eligen combos) -->
         <div id="comboSelector" class="comboBox" style="display:none;">
           <h2 style="margin-bottom:8px;">Elige sabores del combo</h2>
           <p class="mini">Puedes repetir sabores. Si no eliges aquí, lo coordinamos por WhatsApp.</p>
@@ -205,6 +271,7 @@
             <option>Delivery (a coordinar)</option>
             <option>Retiro (a coordinar)</option>
           </select>
+          <div class="mini" id="entregaHint">Si es delivery, agrega dirección para coordinar.</div>
         </div>
       </div>
 
@@ -212,6 +279,7 @@
         <div>
           <label>Día de entrega (día siguiente al cierre 18:00)</label>
           <input id="dia" type="text" placeholder="Ej: Mañana / Miércoles / 24-02" />
+          <div class="mini" id="diaHint"></div>
         </div>
         <div>
           <label>Horario estimado</label>
@@ -219,11 +287,13 @@
         </div>
       </div>
 
-      <label>Dirección (si es delivery)</label>
-      <input id="direccion" type="text" placeholder="Calle + número + depto/casa (si aplica)" />
+      <div id="addressBlock">
+        <label>Dirección (si es delivery)</label>
+        <input id="direccion" type="text" placeholder="Calle + número + depto/casa (si aplica)" />
+      </div>
 
       <label>Notas (alergias, dedicatoria, etc.)</label>
-      <textarea id="notas" placeholder="Ej: sin frutos secos / dedicatoria: 'Feliz cumple'"></textarea>
+      <textarea id="notas" placeholder="Ej: sin frutos secos / dedicatoria: 'Feliz cumple' (Si pediste combo, puedes detallar sabores aquí también)"></textarea>
 
       <div class="row cols2" style="align-items:end">
         <div>
@@ -252,9 +322,31 @@
       </div>
     </section>
 
+    <div style="height:16px"></div>
+
+    <section class="card">
+      <h2>FAQ rápido</h2>
+      <p><b>¿Tamaño?</b> Vasos de <b>180 ml</b>.</p>
+      <p><b>¿Cuándo entregan?</b> Cierre <b>18:00</b> y entrega <b>al día siguiente</b> (horario a coordinar).</p>
+      <p><b>¿Cómo se conserva?</b> Mantener refrigerado. Ideal consumir dentro de 48–72 h.</p>
+      <p class="mini">Si tienes alergias alimentarias, indícalo en “Notas”.</p>
+    </section>
+
     <footer>
-      © <span id="year"></span> DonJu Gourmet · Hecho para preventa y pedidos por WhatsApp.
+      © <span id="year"></span> DonJu Gourmet · Instagram: <a href="https://www.instagram.com/donju_gourmet" target="_blank" rel="noreferrer">@donju_gourmet</a>
     </footer>
+  </div>
+
+  <!-- Floating buttons -->
+  <div class="floatWrap">
+    <button class="fab" onclick="scrollToTop()">↑ Arriba</button>
+    <button class="fab primary" onclick="openWhatsAppDirect()">WhatsApp</button>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <div id="toastTitle" style="font-weight:800;">Listo ✅</div>
+    <small id="toastMsg">Abriendo WhatsApp…</small>
   </div>
 
   <script>
@@ -276,17 +368,34 @@
     const SINGLES = PRODUCTS.filter(p => p.type === "single");
     const COMBOS  = PRODUCTS.filter(p => p.type === "combo");
 
-    // ====== UI RENDER ======
-    document.getElementById("year").textContent = new Date().getFullYear();
-
+    // ====== DOM ======
+    const yearEl = document.getElementById("year");
     const menuList = document.getElementById("menuList");
+    const comboSelector = document.getElementById("comboSelector");
+    const comboFields = document.getElementById("comboFields");
+    const summaryListEl = document.getElementById("summaryList");
+    const summaryTotalEl = document.getElementById("summaryTotal");
+
+    const entregaEl = document.getElementById("entrega");
+    const addressBlock = document.getElementById("addressBlock");
+    const entregaHint = document.getElementById("entregaHint");
+    const diaEl = document.getElementById("dia");
+    const diaHint = document.getElementById("diaHint");
+
+    const toastEl = document.getElementById("toast");
+    const toastTitle = document.getElementById("toastTitle");
+    const toastMsg = document.getElementById("toastMsg");
+
+    yearEl.textContent = new Date().getFullYear();
+
+    // ====== Render menú ======
     PRODUCTS.forEach(p => {
       const el = document.createElement("div");
       el.className = "item";
       el.innerHTML = `
         <div>
-          <strong>${p.name}</strong>
-          <div style="color:var(--muted); font-size:12px">${p.desc}</div>
+          <strong>${escapeHtml(p.name)}</strong>
+          <div style="color:var(--muted); font-size:12px">${escapeHtml(p.desc)}</div>
           <div class="price">$${p.price.toLocaleString("es-CL")}</div>
         </div>
         <div class="qty">
@@ -297,24 +406,41 @@
       menuList.appendChild(el);
     });
 
-    // ====== COMBO SELECTOR ======
-    const comboSelector = document.getElementById("comboSelector");
-    const comboFields = document.getElementById("comboFields");
+    // ====== Helpers ======
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
 
     function getQty(id){
       return parseInt(document.getElementById(id).value || "0", 10);
     }
 
+    function money(n){
+      return `$${Number(n || 0).toLocaleString("es-CL")}`;
+    }
+
+    function showToast(title, msg){
+      toastTitle.textContent = title;
+      toastMsg.textContent = msg;
+      toastEl.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        toastEl.style.display = "none";
+      }, 2200);
+    }
+
+    // ====== Combo selector ======
     function updateComboSelector(){
-      // Total picks = suma de (qtyCombo * picks)
       let totalPicks = 0;
-      const selectedCombos = [];
+
       COMBOS.forEach(c => {
         const q = getQty(c.id);
-        if(q > 0){
-          totalPicks += q * c.picks;
-          selectedCombos.push({ combo: c, qty: q });
-        }
+        if(q > 0) totalPicks += q * c.picks;
       });
 
       if(totalPicks <= 0){
@@ -325,8 +451,8 @@
 
       comboSelector.style.display = "block";
 
-      // Preservar selecciones ya hechas
-      const previous = Array.from(comboFields.querySelectorAll("select")).map(s => s.value);
+      // preservar selecciones
+      const prev = Array.from(comboFields.querySelectorAll("select")).map(s => s.value);
 
       comboFields.innerHTML = "";
       for(let i=0; i<totalPicks; i++){
@@ -341,26 +467,11 @@
         comboFields.appendChild(wrap);
       }
 
-      // Re-aplicar previos
       const selects = comboFields.querySelectorAll("select");
       selects.forEach((sel, idx) => {
-        if(previous[idx]) sel.value = previous[idx];
+        if(prev[idx]) sel.value = prev[idx];
       });
     }
-
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    // Escuchar cambios en cantidades (incluye combos y singles)
-    PRODUCTS.forEach(p => {
-      document.getElementById(p.id).addEventListener("input", updateComboSelector);
-    });
 
     function getComboPicksSummary(){
       if(comboSelector.style.display === "none") return "";
@@ -371,7 +482,6 @@
 
       if(picks.length === 0) return "Sabores combo: (sin seleccionar, a coordinar por WhatsApp)";
 
-      // Conteo
       const count = {};
       picks.forEach(p => count[p] = (count[p] || 0) + 1);
 
@@ -379,10 +489,52 @@
       return `Sabores combo: ${parts.join(" · ")}`;
     }
 
-    // Inicial
-    updateComboSelector();
+    // ====== Resumen en vivo ======
+    function updateSummary(){
+      summaryListEl.innerHTML = "";
+      let total = 0;
 
-    // ====== ORDER BUILD ======
+      PRODUCTS.forEach(p => {
+        const q = getQty(p.id);
+        if(q > 0){
+          const sub = q * p.price;
+          total += sub;
+          const li = document.createElement("li");
+          li.textContent = `${p.name} x${q} = ${money(sub)}`;
+          summaryListEl.appendChild(li);
+        }
+      });
+
+      if(summaryListEl.children.length === 0){
+        const li = document.createElement("li");
+        li.textContent = "Aún no seleccionas productos.";
+        summaryListEl.appendChild(li);
+      }
+
+      summaryTotalEl.textContent = `Total: ${money(total)}`;
+    }
+
+    // ====== Entrega: ocultar dirección si es retiro ======
+    function updateEntregaUI(){
+      const entrega = entregaEl.value.toLowerCase();
+      const isDelivery = entrega.includes("delivery");
+      addressBlock.style.display = isDelivery ? "block" : "none";
+      entregaHint.textContent = isDelivery
+        ? "Si es delivery, agrega dirección para coordinar."
+        : "Si es retiro, coordinamos punto y hora por WhatsApp.";
+    }
+
+    // ====== Hint fecha (si escribe “hoy”) ======
+    function updateDiaHint(){
+      const v = (diaEl.value || "").trim().toLowerCase();
+      if(v.includes("hoy")){
+        diaHint.textContent = "Recuerda: cierre 18:00 y entrega al día siguiente ✅";
+      } else {
+        diaHint.textContent = "";
+      }
+    }
+
+    // ====== Build order ======
     function buildOrderLines(){
       const lines = [];
       let total = 0;
@@ -392,11 +544,17 @@
         if(qty > 0){
           const sub = qty * p.price;
           total += sub;
-          lines.push(`- ${p.name} x${qty} = $${sub.toLocaleString("es-CL")}`);
+          lines.push(`- ${p.name} x${qty} = ${money(sub)}`);
         }
       });
 
       return { lines, total };
+    }
+
+    // ====== WhatsApp actions ======
+    function openWhatsAppDirect(){
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola DonJu Gourmet 👋 Quiero hacer un pedido.")}`;
+      window.open(url, "_blank");
     }
 
     function enviarWhatsApp(){
@@ -421,14 +579,16 @@
         warnBox.textContent = "Te falta elegir al menos 1 ítem (cantidad mayor a 0).";
         return;
       }
-      if(entrega.toLowerCase().includes("delivery") && !direccion){
+
+      const isDelivery = entrega.toLowerCase().includes("delivery");
+      if(isDelivery && !direccion){
         warnBox.style.display = "block";
         warnBox.textContent = "Si es delivery, agrega la dirección para coordinar.";
         return;
       }
 
-      const comboSummary = getComboPicksSummary();
       const includeComboSummary = (getQty("c3") > 0 || getQty("c5") > 0);
+      const comboSummary = getComboPicksSummary();
 
       const msg =
 `Hola DonJu Gourmet 👋
@@ -436,20 +596,26 @@ Soy: ${nombre}${telefono ? ` (Tel: ${telefono})` : ""}
 
 🧁 Pedido (180 ml):
 ${lines.join("\n")}
-Total: $${total.toLocaleString("es-CL")}
+Total: ${money(total)}
 ${includeComboSummary ? `\n🎁 ${comboSummary}\n` : ""}
 
 📍 Comuna: ${comuna}
 🚚 Entrega: ${entrega} (a coordinar)
 📅 Día: ${dia}
 🕒 Hora: ${horario}
-${direccion ? `🏠 Dirección: ${direccion}\n` : ""}💳 Pago: ${pago}
+${isDelivery ? `🏠 Dirección: ${direccion}\n` : ""}💳 Pago: ${pago}
 ${notas ? `📝 Notas: ${notas}\n` : ""}
 
 (Entiendo que los pedidos cierran 18:00 y se entrega al día siguiente ✅)`;
 
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-      window.open(url, "_blank");
+      // Confirmación visual (mejora)
+      showToast("¡Listo! ✅", "Se abrirá WhatsApp para enviar tu pedido…");
+
+      // Abrir WhatsApp con leve delay (para que alcance a verse el toast)
+      setTimeout(() => {
+        const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+        window.open(url, "_blank");
+      }, 350);
     }
 
     function resetForm(){
@@ -460,16 +626,39 @@ ${notas ? `📝 Notas: ${notas}\n` : ""}
       document.getElementById("direccion").value = "";
       document.getElementById("notas").value = "";
       document.getElementById("pago").value = "Transferencia";
+      document.getElementById("warnBox").style.display = "none";
 
       PRODUCTS.forEach(p => document.getElementById(p.id).value = 0);
 
       comboFields.innerHTML = "";
       comboSelector.style.display = "none";
 
-      const warnBox = document.getElementById("warnBox");
-      warnBox.style.display = "none";
-      warnBox.textContent = "";
+      updateEntregaUI();
+      updateDiaHint();
+      updateSummary();
+      showToast("Formulario limpio", "Puedes armar un pedido nuevo.");
     }
+
+    function scrollToTop(){
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // ====== Event listeners ======
+    PRODUCTS.forEach(p => {
+      document.getElementById(p.id).addEventListener("input", () => {
+        updateComboSelector();
+        updateSummary();
+      });
+    });
+
+    entregaEl.addEventListener("change", updateEntregaUI);
+    diaEl.addEventListener("input", updateDiaHint);
+
+    // ====== Init ======
+    updateComboSelector();
+    updateEntregaUI();
+    updateDiaHint();
+    updateSummary();
   </script>
 </body>
 </html>
