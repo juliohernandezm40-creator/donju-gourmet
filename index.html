@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DonJu Gourmet — Pedidos</title>
   <meta name="description" content="DonJu Gourmet: postres 180 ml por encargo. Cierre 18:00, entrega al día siguiente. La Florida, Macul, Peñalolén, Puente Alto, La Granja." />
-  <meta name="theme-color" content="#12121a" />
+  <meta name="theme-color" content="#fbf7f2" />
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest">
@@ -19,10 +19,8 @@
   <meta property="og:image:width" content="1024" />
   <meta property="og:image:height" content="1024" />
 
-  <!-- Favicon -->
   <link rel="icon" href="logo.jpg">
 
-  <!-- SEO structured data (basic) -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -37,38 +35,45 @@
 
   <style>
     :root{
-      --bg:#0b0b10;
-      --panel:#12121a;
-      --stroke:rgba(255,255,255,.10);
-      --stroke2:rgba(255,255,255,.16);
-      --text:#f3f3f7;
-      --muted:#a7a7b4;
-      --accent:#d7b46a;
-      --accent2:#6ad7b4;
-      --danger:#ff6b6b;
-      --shadow: 0 18px 45px rgba(0,0,0,.40);
+      --bg:#fbf7f2;
+      --panel:rgba(255,255,255,.78);
+      --stroke:rgba(40,20,10,.10);
+      --stroke2:rgba(40,20,10,.16);
+      --text:#1b1411;
+      --muted:rgba(27,20,17,.68);
+      --accent:#7a4d2a;      /* café DonJu */
+      --accent2:#2aa6a1;     /* turquesa pañuelo */
+      --danger:#d94b4b;
+      --shadow: 0 18px 45px rgba(30,15,10,.18);
       --r2:22px;
       --max:1020px;
+
+      /* dorado suave para bordes */
+      --gold1: rgba(215,180,106,.55);
+      --gold2: rgba(215,180,106,.18);
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       background:
-        radial-gradient(1100px 750px at 12% 0%, rgba(88,70,170,.35) 0%, rgba(11,11,16,1) 55%),
-        radial-gradient(900px 600px at 90% 20%, rgba(215,180,106,.14) 0%, rgba(11,11,16,1) 60%),
+        radial-gradient(1200px 800px at 10% 0%, rgba(42,166,161,.12) 0%, transparent 60%),
+        radial-gradient(1000px 700px at 90% 10%, rgba(122,77,42,.10) 0%, transparent 62%),
+        radial-gradient(900px 600px at 40% 110%, rgba(255,120,160,.10) 0%, transparent 55%),
         var(--bg);
       color:var(--text);
     }
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:22px}
 
+    /* Topbar */
     .topbar{
       position:sticky; top:12px; z-index:50;
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 14px;
-      background:rgba(18,18,26,.72);
+      background: rgba(255,255,255,.70);
       border:1px solid var(--stroke);
       border-radius:var(--r2);
       backdrop-filter: blur(12px);
@@ -77,21 +82,27 @@
     }
     .brand{display:flex; align-items:center; gap:12px; min-width:0}
     .logo{
-      width:44px; height:44px; border-radius:14px;
-      border:1px solid rgba(215,180,106,.35);
-      background:rgba(255,255,255,.02);
+      width:76px;
+      height:76px;
+      border-radius:20px;
       overflow:hidden;
       flex:0 0 auto;
+      background:rgba(255,255,255,.55);
+      border:1px solid var(--gold1);
+      box-shadow:
+        0 14px 30px rgba(30,15,10,.14),
+        0 0 0 6px var(--gold2);
     }
     .logo img{width:100%; height:100%; object-fit:cover}
     .brandText{min-width:0}
-    .brandText h1{margin:0; font-size:16px; letter-spacing:.3px}
-    .brandText small{display:block; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+    .brandText h1{margin:0; font-size:18px; letter-spacing:.3px}
+    .brandText small{display:block; color:var(--muted); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+
     .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
 
     .btn{
       border:1px solid var(--stroke2);
-      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+      background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
       color:var(--text);
       padding:10px 12px;
       border-radius:14px;
@@ -99,17 +110,20 @@
       font-weight:900;
       text-decoration:none;
       display:inline-flex; align-items:center; gap:8px;
-      transition: transform .06s ease;
+      transition: transform .06s ease, box-shadow .2s ease;
       user-select:none;
+      box-shadow: 0 10px 24px rgba(30,15,10,.08);
     }
     .btn:active{transform:scale(.98)}
     .btn.primary{
-      border-color: rgba(215,180,106,.55);
-      background:linear-gradient(180deg, rgba(215,180,106,.30), rgba(215,180,106,.10));
+      border-color: var(--gold1);
+      background:linear-gradient(180deg, rgba(215,180,106,.30), rgba(215,180,106,.12));
+      box-shadow: 0 12px 26px rgba(122,77,42,.14);
     }
     .btn.ghost{
       background:transparent;
       border-color: var(--stroke);
+      box-shadow:none;
     }
 
     .pill{
@@ -117,18 +131,20 @@
       padding:8px 10px;
       border-radius:999px;
       border:1px solid var(--stroke);
-      background:rgba(255,255,255,.03);
+      background:rgba(255,255,255,.60);
       color:var(--muted);
       font-size:12px;
       white-space:nowrap;
+      box-shadow: 0 10px 22px rgba(30,15,10,.06);
     }
 
+    /* Hero */
     .hero{
       margin-top:16px;
       padding:18px;
       border-radius:var(--r2);
       border:1px solid var(--stroke);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      background:linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.62));
       box-shadow: var(--shadow);
       display:grid;
       gap:14px;
@@ -140,33 +156,34 @@
     .grid{display:grid; gap:16px; margin-top:16px}
     @media(min-width:980px){ .grid.cols2{grid-template-columns: 1.1fr .9fr} }
 
+    /* Cards */
     .card{
       border-radius:var(--r2);
       border:1px solid var(--stroke);
-      background:rgba(18,18,26,.74);
+      background: rgba(255,255,255,.74);
       backdrop-filter: blur(10px);
       box-shadow: var(--shadow);
       padding:16px;
     }
     .card h3{margin:0 0 10px 0; font-size:16px}
     .muted{color:var(--muted)}
-    .hr{height:1px; background:rgba(255,255,255,.10); margin:14px 0}
+    .hr{height:1px; background:rgba(40,20,10,.10); margin:14px 0}
 
     .note{
       padding:10px 12px;
       border-radius:16px;
-      border:1px solid rgba(106,215,180,.25);
-      background:rgba(106,215,180,.10);
-      color:#d9fff3;
+      border:1px solid rgba(42,166,161,.22);
+      background:rgba(42,166,161,.10);
+      color:#0e4e4b;
       font-size:13px;
       line-height:1.35;
     }
     .warn{
       padding:10px 12px;
       border-radius:16px;
-      border:1px solid rgba(255,107,107,.25);
-      background:rgba(255,107,107,.10);
-      color:#ffe1e1;
+      border:1px solid rgba(217,75,75,.25);
+      background:rgba(217,75,75,.10);
+      color:#7a1f1f;
       font-size:13px;
       line-height:1.35;
     }
@@ -181,16 +198,16 @@
       padding:12px;
       border-radius:18px;
       border:1px solid var(--stroke);
-      background:rgba(255,255,255,.03);
+      background:rgba(255,255,255,.62);
+      box-shadow: 0 10px 22px rgba(30,15,10,.06);
     }
     .thumb{
       width:64px; height:64px; border-radius:18px;
-      border:1px solid rgba(255,255,255,.12);
+      border:1px solid rgba(40,20,10,.10);
       background:
-        radial-gradient(26px 22px at 30% 30%, rgba(215,180,106,.35), transparent 70%),
-        radial-gradient(30px 28px at 70% 70%, rgba(106,215,180,.18), transparent 75%),
-        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-      box-shadow: 0 14px 35px rgba(0,0,0,.25);
+        radial-gradient(26px 22px at 30% 30%, rgba(215,180,106,.22), transparent 70%),
+        radial-gradient(30px 28px at 70% 70%, rgba(42,166,161,.12), transparent 75%),
+        linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
     }
     .itemTitle{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
     .itemTitle strong{font-size:14px}
@@ -200,11 +217,11 @@
       width:84px;
       padding:10px 10px;
       border-radius:14px;
-      border:1px solid var(--stroke2);
-      background:rgba(0,0,0,.25);
+      border:1px solid rgba(40,20,10,.14);
+      background:rgba(255,255,255,.70);
       color:var(--text);
       outline:none;
-      font-weight:900;
+      font-weight:950;
     }
 
     /* Form */
@@ -213,8 +230,8 @@
       width:100%;
       padding:11px 12px;
       border-radius:14px;
-      border:1px solid var(--stroke2);
-      background:rgba(0,0,0,.25);
+      border:1px solid rgba(40,20,10,.16);
+      background:rgba(255,255,255,.70);
       color:var(--text);
       outline:none;
     }
@@ -231,7 +248,7 @@
     /* Drawer */
     .drawerBackdrop{
       position:fixed; inset:0;
-      background:rgba(0,0,0,.55);
+      background:rgba(30,15,10,.35);
       display:none;
       z-index:80;
     }
@@ -240,34 +257,35 @@
       top:0; right:0;
       height:100%;
       width:min(420px, 92vw);
-      background:rgba(18,18,26,.92);
+      background:rgba(255,255,255,.88);
       border-left:1px solid var(--stroke);
       backdrop-filter: blur(14px);
-      box-shadow: -12px 0 45px rgba(0,0,0,.45);
+      box-shadow: -12px 0 45px rgba(30,15,10,.20);
       transform: translateX(100%);
       transition: transform .22s ease;
       z-index:90;
       display:flex;
       flex-direction:column;
+      color:var(--text);
     }
     .drawer.open{transform: translateX(0)}
     .drawerHeader{
       padding:14px;
       display:flex; align-items:center; justify-content:space-between; gap:12px;
-      border-bottom:1px solid rgba(255,255,255,.08);
+      border-bottom:1px solid rgba(40,20,10,.10);
     }
     .drawerBody{padding:14px; overflow:auto}
     .cartLine{
       display:flex; justify-content:space-between; gap:10px;
       padding:10px 0;
-      border-bottom:1px dashed rgba(255,255,255,.10);
+      border-bottom:1px dashed rgba(40,20,10,.12);
       color:var(--muted);
       font-size:13px;
     }
-    .cartLine b{color:var(--text); font-weight:900}
+    .cartLine b{color:var(--text); font-weight:950}
     .drawerFooter{
       padding:14px;
-      border-top:1px solid rgba(255,255,255,.08);
+      border-top:1px solid rgba(40,20,10,.10);
       display:grid; gap:10px;
     }
     .total{
@@ -288,7 +306,7 @@
       width:min(var(--max), 94vw);
       border-radius:999px;
       border:1px solid var(--stroke);
-      background:rgba(18,18,26,.78);
+      background:rgba(255,255,255,.78);
       backdrop-filter: blur(14px);
       box-shadow: var(--shadow);
       padding:10px 12px;
@@ -298,8 +316,8 @@
     .floatBar .left .count{
       width:34px; height:34px; border-radius:999px;
       display:grid; place-items:center;
-      border:1px solid rgba(215,180,106,.45);
-      background:rgba(215,180,106,.10);
+      border:1px solid var(--gold1);
+      background:rgba(215,180,106,.12);
       font-weight:950;
     }
     .floatBar .left .summary{
@@ -318,11 +336,12 @@
       z-index:200;
       display:none;
       max-width:92vw;
-      background:rgba(18,18,26,.92);
-      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(40,20,10,.12);
       border-radius:16px;
       padding:12px 14px;
       box-shadow: var(--shadow);
+      color:var(--text);
     }
     .toast b{display:block}
     .toast small{color:var(--muted)}
@@ -344,12 +363,12 @@
         <div class="logo" aria-hidden="true"><img src="logo.jpg" alt="DonJu Gourmet"></div>
         <div class="brandText">
           <h1>DonJu Gourmet</h1>
-          <small>Pedidos por encargo · Cierre 18:00 · Entrega al día siguiente · 180 ml</small>
+          <small>Un gusto que enamora · Cierre 18:00 · Entrega al día siguiente · 180 ml</small>
         </div>
       </div>
       <div class="actions">
         <a class="btn ghost" href="https://www.instagram.com/donju_gourmet" target="_blank" rel="noreferrer">Instagram</a>
-        <button class="btn" id="btnOpenCart">Carrito</button>
+        <button class="btn" id="btnOpenCart" type="button">Carrito</button>
         <a class="btn primary" href="#pedido">Pedir</a>
       </div>
     </div>
@@ -537,7 +556,7 @@
 
   <script>
     const WHATSAPP_NUMBER = "56956059401";
-    const STORAGE_KEY = "donju_cart_v2";
+    const STORAGE_KEY = "donju_cart_pastel_v1";
 
     const PRODUCTS = [
       { id: "p1", name: "Tiramisú", desc: "Cremoso, con café y cacao. Sabor clásico DonJu.", price: 2000, type: "single" },
@@ -562,4 +581,393 @@
     const entregaHint = document.getElementById("entregaHint");
     const addressBlock = document.getElementById("addressBlock");
     const diaEl = document.getElementById("dia");
-    const diaHin
+    const diaHint = document.getElementById("diaHint");
+
+    const btnSend = document.getElementById("btnSend");
+    const btnCopy = document.getElementById("btnCopy");
+    const btnClear = document.getElementById("btnClear");
+    const warnBox = document.getElementById("warnBox");
+
+    const drawer = document.getElementById("drawer");
+    const drawerBackdrop = document.getElementById("drawerBackdrop");
+    const btnOpenCart = document.getElementById("btnOpenCart");
+    const btnOpenCart2 = document.getElementById("btnOpenCart2");
+    const btnCloseCart = document.getElementById("btnCloseCart");
+    const cartLines = document.getElementById("cartLines");
+    const cartTotal = document.getElementById("cartTotal");
+
+    const floatCount = document.getElementById("floatCount");
+    const floatSummary = document.getElementById("floatSummary");
+    const btnWhatsAppQuick = document.getElementById("btnWhatsAppQuick");
+
+    const toast = document.getElementById("toast");
+    const toastTitle = document.getElementById("toastTitle");
+    const toastMsg = document.getElementById("toastMsg");
+
+    yearEl.textContent = new Date().getFullYear();
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+    function money(n){ return `$${Number(n||0).toLocaleString("es-CL")}`; }
+    function showToast(title, msg){
+      toastTitle.textContent = title;
+      toastMsg.textContent = msg;
+      toast.style.display = "block";
+      clearTimeout(window.__t);
+      window.__t = setTimeout(()=> toast.style.display = "none", 2300);
+    }
+    function getQty(id){
+      const el = document.getElementById(id);
+      return parseInt((el?.value || "0"), 10) || 0;
+    }
+    function setQty(id, val){
+      const el = document.getElementById(id);
+      if(el) el.value = String(Math.max(0, val|0));
+    }
+
+    // Render menú
+    PRODUCTS.forEach(p => {
+      const row = document.createElement("div");
+      row.className = "item";
+      row.innerHTML = `
+        <div class="thumb" aria-hidden="true"></div>
+        <div>
+          <div class="itemTitle">
+            <strong>${escapeHtml(p.name)}</strong>
+            <span class="priceTag">${money(p.price)}</span>
+          </div>
+          <div class="desc">${escapeHtml(p.desc)}</div>
+        </div>
+        <div class="qty">
+          <input id="${p.id}" type="number" min="0" value="0" inputmode="numeric" aria-label="Cantidad ${escapeHtml(p.name)}" />
+        </div>
+      `;
+      menuList.appendChild(row);
+    });
+
+    // Persistencia
+    function saveState(){
+      const state = {
+        qty: Object.fromEntries(PRODUCTS.map(p => [p.id, getQty(p.id)])),
+        form: {
+          nombre: document.getElementById("nombre").value || "",
+          telefono: document.getElementById("telefono").value || "",
+          comuna: document.getElementById("comuna").value || "La Florida",
+          entrega: document.getElementById("entrega").value || "Delivery (a coordinar)",
+          dia: document.getElementById("dia").value || "",
+          horario: document.getElementById("horario").value || "",
+          direccion: document.getElementById("direccion").value || "",
+          notas: document.getElementById("notas").value || "",
+          pago: document.getElementById("pago").value || "Transferencia"
+        },
+        picks: Array.from(comboFields.querySelectorAll("select")).map(s => s.value || "")
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+    function loadState(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      try{
+        const state = JSON.parse(raw);
+        if(state?.qty){
+          for(const [id,val] of Object.entries(state.qty)) setQty(id, val);
+        }
+        if(state?.form){
+          for(const [k,v] of Object.entries(state.form)){
+            const el = document.getElementById(k);
+            if(el) el.value = v;
+          }
+        }
+      }catch(e){}
+    }
+
+    function buildComboFields(totalPicks, prevValues){
+      comboFields.innerHTML = "";
+      for(let i=0; i<totalPicks; i++){
+        const wrap = document.createElement("div");
+        wrap.innerHTML = `
+          <label>Selección ${i+1}</label>
+          <select id="pick_${i}">
+            <option value="">(Elegir sabor)</option>
+            ${SINGLES.map(s => `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`).join("")}
+          </select>
+        `;
+        comboFields.appendChild(wrap);
+      }
+      const selects = comboFields.querySelectorAll("select");
+      selects.forEach((sel, idx) => { if(prevValues?.[idx]) sel.value = prevValues[idx]; });
+    }
+
+    function updateComboUI(){
+      let totalPicks = 0;
+      COMBOS.forEach(c => totalPicks += getQty(c.id) * c.picks);
+
+      if(totalPicks <= 0){
+        comboBox.style.display = "none";
+        comboFields.innerHTML = "";
+        return;
+      }
+      comboBox.style.display = "block";
+      const prev = Array.from(comboFields.querySelectorAll("select")).map(s => s.value || "");
+      buildComboFields(totalPicks, prev);
+
+      comboFields.querySelectorAll("select").forEach(sel => sel.addEventListener("change", () => {
+        saveState(); renderAll();
+      }));
+    }
+
+    function comboSummary(){
+      if(comboBox.style.display === "none") return "";
+      const picks = Array.from(comboFields.querySelectorAll("select"))
+        .map(s => (s.value || "").trim())
+        .filter(Boolean);
+
+      if(picks.length === 0) return "Sabores combo: (sin seleccionar, a coordinar por WhatsApp)";
+
+      const count = {};
+      picks.forEach(p => count[p] = (count[p]||0)+1);
+      return "Sabores combo: " + Object.entries(count).map(([n,c]) => `${c} x ${n}`).join(" · ");
+    }
+
+    function updateEntregaUI(){
+      const isDelivery = entregaEl.value.toLowerCase().includes("delivery");
+      addressBlock.style.display = isDelivery ? "block" : "none";
+      entregaHint.textContent = isDelivery
+        ? "Si es delivery, agrega dirección para coordinar."
+        : "Si es retiro, coordinamos punto y hora por WhatsApp.";
+    }
+
+    function suggestNextDayIfEmpty(){
+      if((diaEl.value || "").trim().length > 0) return;
+      const now = new Date();
+      const tomorrow = new Date(now.getTime() + 24*60*60*1000);
+      const dd = String(tomorrow.getDate()).padStart(2,"0");
+      const mm = String(tomorrow.getMonth()+1).padStart(2,"0");
+      diaEl.value = `${dd}-${mm}`;
+    }
+
+    function updateDiaHint(){
+      const v = (diaEl.value||"").trim().toLowerCase();
+      diaHint.textContent = v.includes("hoy") ? "Recuerda: cierre 18:00 y entrega al día siguiente ✅" : "";
+    }
+
+    function buildOrder(){
+      const lines = [];
+      let total = 0;
+      let countItems = 0;
+      PRODUCTS.forEach(p => {
+        const q = getQty(p.id);
+        if(q > 0){
+          const sub = q * p.price;
+          total += sub;
+          countItems += q;
+          lines.push({ name:p.name, qty:q, sub });
+        }
+      });
+      return { lines, total, countItems };
+    }
+
+    function renderCartDrawer(order){
+      cartLines.innerHTML = "";
+      if(order.lines.length === 0){
+        cartLines.innerHTML = `<div class="muted">Aún no seleccionas productos.</div>`;
+      }else{
+        order.lines.forEach(l => {
+          const div = document.createElement("div");
+          div.className = "cartLine";
+          div.innerHTML = `<div><b>${escapeHtml(l.name)}</b><div class="muted">x${l.qty}</div></div><div>${money(l.sub)}</div>`;
+          cartLines.appendChild(div);
+        });
+      }
+      cartTotal.textContent = money(order.total);
+    }
+
+    function renderLiveSummary(order){
+      if(order.lines.length === 0){
+        liveSummary.innerHTML = `<div class="muted">Aún no seleccionas productos.</div>`;
+      }else{
+        const top = order.lines.slice(0,4).map(l => `${l.name} x${l.qty}`).join(" · ");
+        const extra = order.lines.length > 4 ? ` · +${order.lines.length-4} más` : "";
+        liveSummary.innerHTML = `
+          <div><b>Total:</b> <span style="color:var(--accent); font-weight:950;">${money(order.total)}</span></div>
+          <div class="mini">${escapeHtml(top + extra)}</div>
+        `;
+      }
+      floatCount.textContent = String(order.countItems);
+      floatSummary.textContent = order.lines.length ? `Total ${money(order.total)} · ${order.lines.length} ítems` : "Sin productos seleccionados.";
+    }
+
+    function renderAll(){
+      updateEntregaUI();
+      updateDiaHint();
+      const order = buildOrder();
+      renderLiveSummary(order);
+      renderCartDrawer(order);
+      saveState();
+    }
+
+    function openDrawer(){
+      drawerBackdrop.style.display = "block";
+      drawer.classList.add("open");
+    }
+    function closeDrawer(){
+      drawerBackdrop.style.display = "none";
+      drawer.classList.remove("open");
+    }
+
+    function buildWhatsAppMessage(){
+      const nombre = (document.getElementById("nombre").value || "").trim() || "(sin nombre)";
+      const telefono = (document.getElementById("telefono").value || "").trim();
+      const comuna = document.getElementById("comuna").value;
+      const entrega = document.getElementById("entrega").value;
+      const dia = (document.getElementById("dia").value || "").trim() || "(sin fecha)";
+      const horario = (document.getElementById("horario").value || "").trim() || "(sin horario)";
+      const direccion = (document.getElementById("direccion").value || "").trim();
+      const notas = (document.getElementById("notas").value || "").trim();
+      const pago = document.getElementById("pago").value;
+
+      const order = buildOrder();
+      if(order.lines.length === 0) return { ok:false, error:"Te falta elegir al menos 1 ítem (cantidad mayor a 0)." };
+
+      const isDelivery = entrega.toLowerCase().includes("delivery");
+      if(isDelivery && !direccion) return { ok:false, error:"Si es delivery, agrega la dirección para coordinar." };
+
+      const comboUsed = (getQty("c3") > 0 || getQty("c5") > 0);
+      const comboText = comboUsed ? `\n🎁 ${comboSummary()}\n` : "";
+
+      const linesText = order.lines.map(l => `- ${l.name} x${l.qty} = ${money(l.sub)}`).join("\n");
+
+      const msg =
+`Hola DonJu Gourmet 👋
+Soy: ${nombre}${telefono ? ` (Tel: ${telefono})` : ""}
+
+🧁 Pedido (180 ml):
+${linesText}
+Total: ${money(order.total)}
+${comboText}
+📍 Comuna: ${comuna}
+🚚 Entrega: ${entrega} (a coordinar)
+📅 Día: ${dia}
+🕒 Hora: ${horario}
+${isDelivery ? `🏠 Dirección: ${direccion}\n` : ""}💳 Pago: ${pago}
+${notas ? `📝 Notas: ${notas}\n` : ""}
+
+(Entiendo que los pedidos cierran 18:00 y se entrega al día siguiente ✅)`;
+
+      return { ok:true, msg };
+    }
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        return true;
+      }catch(e){
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        ta.remove();
+        return ok;
+      }
+    }
+
+    // Listeners
+    PRODUCTS.forEach(p => {
+      document.getElementById(p.id).addEventListener("input", () => {
+        updateComboUI();
+        renderAll();
+      });
+    });
+
+    ["nombre","telefono","comuna","entrega","dia","horario","direccion","notas","pago"].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener("input", saveState);
+      el.addEventListener("change", saveState);
+    });
+
+    entregaEl.addEventListener("change", () => { updateEntregaUI(); saveState(); });
+    diaEl.addEventListener("input", () => { updateDiaHint(); saveState(); });
+
+    btnOpenCart.addEventListener("click", openDrawer);
+    btnOpenCart2.addEventListener("click", openDrawer);
+    btnCloseCart.addEventListener("click", closeDrawer);
+    drawerBackdrop.addEventListener("click", closeDrawer);
+
+    btnWhatsAppQuick.addEventListener("click", () => {
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola DonJu Gourmet 👋 Quiero hacer un pedido.")}`;
+      window.open(url, "_blank");
+    });
+
+    btnCopy.addEventListener("click", async () => {
+      const built = buildWhatsAppMessage();
+      if(!built.ok){
+        warnBox.style.display = "block";
+        warnBox.textContent = built.error;
+        return;
+      }
+      warnBox.style.display = "none";
+      const ok = await copyText(built.msg);
+      showToast(ok ? "Copiado ✅" : "No se pudo copiar", ok ? "Pedido copiado. Pégalo en WhatsApp." : "Intenta de nuevo.");
+    });
+
+    btnClear.addEventListener("click", () => {
+      PRODUCTS.forEach(p => setQty(p.id, 0));
+      comboFields.innerHTML = "";
+      comboBox.style.display = "none";
+      ["nombre","telefono","dia","horario","direccion","notas"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("comuna").value = "La Florida";
+      document.getElementById("entrega").value = "Delivery (a coordinar)";
+      document.getElementById("pago").value = "Transferencia";
+      warnBox.style.display = "none";
+      localStorage.removeItem(STORAGE_KEY);
+      suggestNextDayIfEmpty();
+      updateComboUI();
+      renderAll();
+      showToast("Listo", "Formulario limpio. Arma un pedido nuevo.");
+    });
+
+    btnSend.addEventListener("click", async () => {
+      const built = buildWhatsAppMessage();
+      if(!built.ok){
+        warnBox.style.display = "block";
+        warnBox.textContent = built.error;
+        return;
+      }
+      warnBox.style.display = "none";
+      showToast("¡Listo! ✅", "Abriendo WhatsApp para enviar tu pedido…");
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(built.msg)}`;
+
+      setTimeout(async () => {
+        const w = window.open(url, "_blank");
+        if(!w){
+          await copyText(built.msg);
+          showToast("Bloqueado por el navegador", "Copié el pedido. Pégalo en WhatsApp.");
+        }
+      }, 350);
+    });
+
+    // Init
+    loadState();
+    suggestNextDayIfEmpty();
+    updateEntregaUI();
+    updateDiaHint();
+    updateComboUI();
+    renderAll();
+
+    // Register Service Worker (PWA)
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
