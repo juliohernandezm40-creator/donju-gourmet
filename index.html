@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DonJu Gourmet — Pedidos</title>
+  <meta name="description" content="DonJu Gourmet: postres por encargo. Cierre 18:00, entrega al día siguiente. La Florida, Macul, Peñalolén, Puente Alto, La Granja." />
+  <style>
+    :root{
+      --bg:#0b0b0f; --card:#12121a; --muted:#a8a8b3; --text:#f2f2f6;
+      --accent:#d7b46a; --accent2:#6ad7b4; --danger:#ff6b6b;
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 20% 0%, #1a1530 0%, var(--bg) 50%);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:980px; margin:0 auto; padding:24px}
+    header{
+      display:flex; gap:18px; align-items:center; justify-content:space-between;
+      padding:18px 18px; background:rgba(18,18,26,.7); border:1px solid rgba(255,255,255,.08);
+      border-radius:var(--radius); backdrop-filter: blur(10px);
+      position:sticky; top:12px; z-index:9;
+    }
+    .brand{display:flex; flex-direction:column; gap:2px}
+    .brand h1{font-size:18px; margin:0; letter-spacing:.3px}
+    .brand small{color:var(--muted)}
+    .ctaRow{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .btn{
+      border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+      color:var(--text); padding:10px 14px; border-radius:14px; cursor:pointer;
+      font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn.primary{
+      border-color: rgba(215,180,106,.55);
+      background:linear-gradient(180deg, rgba(215,180,106,.28), rgba(215,180,106,.08));
+    }
+    .grid{display:grid; gap:16px}
+    @media(min-width:900px){ .grid.cols2{grid-template-columns: 1.1fr .9fr} }
+    .card{
+      background:rgba(18,18,26,.75);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.28);
+    }
+    h2{margin:0 0 10px 0; font-size:16px}
+    p{margin:0 0 10px 0; color:var(--muted); line-height:1.45}
+    .tag{
+      display:inline-flex; padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14); color:var(--muted); font-size:12px;
+      margin-right:8px; margin-top:6px;
+    }
+    .menu{
+      display:grid; gap:12px;
+    }
+    .item{
+      display:grid; grid-template-columns: 1fr auto;
+      gap:10px; align-items:center; padding:12px;
+      border-radius:16px; border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+    }
+    .item strong{display:block; margin-bottom:2px}
+    .price{font-weight:800; color:var(--accent)}
+    .qty{
+      display:flex; align-items:center; gap:8px;
+    }
+    input[type="number"], input[type="text"], input[type="tel"], select, textarea{
+      width:100%;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.25);
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:90px; resize:vertical}
+    label{display:block; font-size:12px; color:var(--muted); margin:10px 0 6px}
+    .row{display:grid; gap:12px}
+    @media(min-width:700px){ .row.cols2{grid-template-columns:1fr 1fr} }
+    .note{
+      padding:10px 12px; border-radius:14px;
+      background:rgba(106,215,180,.10);
+      border:1px solid rgba(106,215,180,.25);
+      color:#d9fff3;
+      font-size:13px;
+    }
+    .warn{
+      padding:10px 12px; border-radius:14px;
+      background:rgba(255,107,107,.10);
+      border:1px solid rgba(255,107,107,.25);
+      color:#ffe1e1;
+      font-size:13px;
+    }
+    footer{padding:20px 0; color:var(--muted); font-size:12px}
+    .hr{height:1px; background:rgba(255,255,255,.10); margin:14px 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <h1>DonJu Gourmet</h1>
+        <small>Pedidos por encargo · Cierre 18:00 · Entrega al día siguiente</small>
+      </div>
+      <div class="ctaRow">
+        <a class="btn" href="https://www.instagram.com/donju_gourmet" target="_blank" rel="noreferrer">Instagram</a>
+        <a class="btn primary" href="#pedido">Pedir ahora</a>
+      </div>
+    </header>
+
+    <div style="height:14px"></div>
+
+    <div class="grid cols2">
+      <section class="card">
+        <h2>Cómo funciona</h2>
+        <p>
+          Trabajamos con <b>preventa</b> para asegurar frescura y orden de producción.
+          <br/>✅ <b>Cerramos pedidos</b> a las <b>18:00</b> y <b>entregamos al día siguiente</b>.
+        </p>
+        <div class="tag">La Florida</div>
+        <div class="tag">Macul</div>
+        <div class="tag">Peñalolén</div>
+        <div class="tag">Puente Alto</div>
+        <div class="tag">La Granja</div>
+        <div class="hr"></div>
+        <p><b>Horarios de entrega:</b><br/>
+          Lunes a viernes: desde <b>17:00</b><br/>
+          Sábados, domingos y feriados: <b>10:00–20:00</b>
+        </p>
+        <div class="note">
+          Pagos disponibles: <b>transferencia</b> o <b>efectivo</b>.
+          (Si quieres, después sumamos link de pago con Webpay/MercadoPago/Flow)
+        </div>
+      </section>
+
+      <section class="card" id="menu">
+        <h2>Menú — Postres ($2.000 c/u)</h2>
+        <p>Por ahora dejamos 5 ítems base. Tú puedes cambiar nombres y descripciones cuando quieras.</p>
+
+        <div class="menu" id="menuList">
+          <!-- Items se insertan por JS -->
+        </div>
+      </section>
+    </div>
+
+    <div style="height:16px"></div>
+
+    <section class="card" id="pedido">
+      <h2>Pedido</h2>
+      <p>Completa esto y te abrimos WhatsApp con el pedido listo para enviar.</p>
+
+      <div class="row cols2">
+        <div>
+          <label>Nombre</label>
+          <input id="nombre" type="text" placeholder="Ej: Camila" />
+        </div>
+        <div>
+          <label>Teléfono (opcional)</label>
+          <input id="telefono" type="tel" placeholder="Ej: +56 9 1234 5678" />
+        </div>
+      </div>
+
+      <div class="row cols2">
+        <div>
+          <label>Comuna</label>
+          <select id="comuna">
+            <option>La Florida</option>
+            <option>Macul</option>
+            <option>Peñalolén</option>
+            <option>Puente Alto</option>
+            <option>La Granja</option>
+          </select>
+        </div>
+        <div>
+          <label>Método de entrega</label>
+          <select id="entrega">
+            <option>Delivery (a coordinar)</option>
+            <option>Retiro (a coordinar)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row cols2">
+        <div>
+          <label>Día de entrega (día siguiente al cierre 18:00)</label>
+          <input id="dia" type="text" placeholder="Ej: Mañana / Miércoles / 24-02" />
+        </div>
+        <div>
+          <label>Horario estimado</label>
+          <input id="horario" type="text" placeholder="Ej: 18:30 (L-V) / 12:00 (fin de semana)" />
+        </div>
+      </div>
+
+      <label>Dirección (si es delivery)</label>
+      <input id="direccion" type="text" placeholder="Calle + número + depto/casa (si aplica)" />
+
+      <label>Notas (alergias, dedicatoria, sin algo, etc.)</label>
+      <textarea id="notas" placeholder="Ej: sin frutos secos / dedicatoria: 'Feliz cumple'"></textarea>
+
+      <div class="row cols2" style="align-items:end">
+        <div>
+          <label>Método de pago</label>
+          <select id="pago">
+            <option>Transferencia</option>
+            <option>Efectivo</option>
+          </select>
+          <div style="height:10px"></div>
+          <div class="warn" id="warnBox" style="display:none"></div>
+        </div>
+        <div style="display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap">
+          <button class="btn" onclick="resetForm()">Limpiar</button>
+          <button class="btn primary" onclick="enviarWhatsApp()">Enviar por WhatsApp</button>
+        </div>
+      </div>
+    </section>
+
+    <div style="height:16px"></div>
+
+    <section class="card">
+      <h2>Transferencia (completar cuando quieras)</h2>
+      <p>
+        Aquí después pegas tus datos (Banco / Tipo de cuenta / N° / RUT / correo).
+        <br/>Por ahora puedes dejarlo vacío y coordinar por WhatsApp.
+      </p>
+      <div class="note">
+        Tip: cuando formalices, puedes sumar “link de pago” y el sitio no cambia.
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> DonJu Gourmet · Hecho para preventa y pedidos por WhatsApp.
+    </footer>
+  </div>
+
+  <script>
+    // ====== CONFIG ======
+    const WHATSAPP_NUMBER = "56956059401"; // sin +, sin espacios
+    const PRICE = 2000;
+
+    // Cambia aquí los nombres cuando quieras:
+    const PRODUCTS = [
+      { id: "p1", name: "Postre 1 (editar nombre)", desc: "Descripción breve (editar)." },
+      { id: "p2", name: "Postre 2 (editar nombre)", desc: "Descripción breve (editar)." },
+      { id: "p3", name: "Postre 3 (editar nombre)", desc: "Descripción breve (editar)." },
+      { id: "p4", name: "Postre 4 (editar nombre)", desc: "Descripción breve (editar)." },
+      { id: "p5", name: "Postre 5 (editar nombre)", desc: "Descripción breve (editar)." },
+    ];
+
+    // ====== UI RENDER ======
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const menuList = document.getElementById("menuList");
+    PRODUCTS.forEach(p => {
+      const el = document.createElement("div");
+      el.className = "item";
+      el.innerHTML = `
+        <div>
+          <strong>${p.name}</strong>
+          <div style="color:var(--muted); font-size:12px">${p.desc}</div>
+          <div class="price">$${PRICE.toLocaleString("es-CL")}</div>
+        </div>
+        <div class="qty">
+          <label style="margin:0; font-size:12px; color:var(--muted)">Cant.</label>
+          <input id="${p.id}" type="number" min="0" value="0" style="width:84px" />
+        </div>
+      `;
+      menuList.appendChild(el);
+    });
+
+    function buildOrderLines(){
+      const lines = [];
+      let total = 0;
+      PRODUCTS.forEach(p => {
+        const qty = parseInt(document.getElementById(p.id).value || "0", 10);
+        if(qty > 0){
+          const sub = qty * PRICE;
+          total += sub;
+          lines.push(`- ${p.name} x${qty} = $${sub.toLocaleString("es-CL")}`);
+        }
+      });
+      return { lines, total };
+    }
+
+    function enviarWhatsApp(){
+      const nombre = document.getElementById("nombre").value.trim() || "(sin nombre)";
+      const telefono = document.getElementById("telefono").value.trim();
+      const comuna = document.getElementById("comuna").value;
+      const entrega = document.getElementById("entrega").value;
+      const dia = document.getElementById("dia").value.trim() || "(sin fecha)";
+      const horario = document.getElementById("horario").value.trim() || "(sin horario)";
+      const direccion = document.getElementById("direccion").value.trim();
+      const notas = document.getElementById("notas").value.trim();
+      const pago = document.getElementById("pago").value;
+
+      const { lines, total } = buildOrderLines();
+
+      const warnBox = document.getElementById("warnBox");
+      warnBox.style.display = "none";
+      warnBox.textContent = "";
+
+      if(lines.length === 0){
+        warnBox.style.display = "block";
+        warnBox.textContent = "Te falta elegir al menos 1 postre (cantidad mayor a 0).";
+        return;
+      }
+      if(entrega.toLowerCase().includes("delivery") && !direccion){
+        warnBox.style.display = "block";
+        warnBox.textContent = "Si es delivery, agrega la dirección para cotizar/coordinar.";
+        return;
+      }
+
+      const msg =
+`Hola DonJu Gourmet 👋
+Soy: ${nombre}${telefono ? ` (Tel: ${telefono})` : ""}
+
+🧁 Pedido:
+${lines.join("\n")}
+Total: $${total.toLocaleString("es-CL")}
+
+📍 Comuna: ${comuna}
+🚚 Entrega: ${entrega}
+📅 Día: ${dia}
+🕒 Hora: ${horario}
+${direccion ? `🏠 Dirección: ${direccion}\n` : ""}💳 Pago: ${pago}
+${notas ? `📝 Notas: ${notas}\n` : ""}
+
+(Entiendo que los pedidos cierran 18:00 y se entrega al día siguiente ✅)`;
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank");
+    }
+
+    function resetForm(){
+      document.getElementById("nombre").value = "";
+      document.getElementById("telefono").value = "";
+      document.getElementById("dia").value = "";
+      document.getElementById("horario").value = "";
+      document.getElementById("direccion").value = "";
+      document.getElementById("notas").value = "";
+      document.getElementById("pago").value = "Transferencia";
+      PRODUCTS.forEach(p => document.getElementById(p.id).value = 0);
+      const warnBox = document.getElementById("warnBox");
+      warnBox.style.display = "none";
+      warnBox.textContent = "";
+    }
+  </script>
+</body>
+</html>
