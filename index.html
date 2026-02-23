@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DonJu Gourmet — Pedidos</title>
   <meta name="description" content="DonJu Gourmet: postres por encargo. Cierre 18:00, entrega al día siguiente. La Florida, Macul, Peñalolén, Puente Alto, La Granja." />
+
+  <meta property="og:title" content="DonJu Gourmet — Pedidos por WhatsApp" />
+  <meta property="og:description" content="Postres 180 ml · Cierre 18:00 · Entrega al día siguiente · La Florida y alrededores" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://juliohernandezm40-creator.github.io/donju-gourmet/" />
+
   <style>
     :root{
       --bg:#0b0b0f; --card:#12121a; --muted:#a8a8b3; --text:#f2f2f6;
@@ -55,9 +61,7 @@
       border:1px solid rgba(255,255,255,.14); color:var(--muted); font-size:12px;
       margin-right:8px; margin-top:6px;
     }
-    .menu{
-      display:grid; gap:12px;
-    }
+    .menu{display:grid; gap:12px;}
     .item{
       display:grid; grid-template-columns: 1fr auto;
       gap:10px; align-items:center; padding:12px;
@@ -66,9 +70,7 @@
     }
     .item strong{display:block; margin-bottom:2px}
     .price{font-weight:800; color:var(--accent)}
-    .qty{
-      display:flex; align-items:center; gap:8px;
-    }
+    .qty{display:flex; align-items:center; gap:8px;}
     input[type="number"], input[type="text"], input[type="tel"], select, textarea{
       width:100%;
       padding:10px 12px;
@@ -98,6 +100,23 @@
     }
     footer{padding:20px 0; color:var(--muted); font-size:12px}
     .hr{height:1px; background:rgba(255,255,255,.10); margin:14px 0}
+    .comboBox{
+      margin-top:14px;
+      border-radius:16px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+    }
+    .comboGrid{
+      display:grid;
+      gap:10px;
+    }
+    @media(min-width:700px){ .comboGrid.cols2{grid-template-columns:1fr 1fr} }
+    .mini{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:6px;
+    }
   </style>
 </head>
 <body>
@@ -133,17 +152,21 @@
           Sábados, domingos y feriados: <b>10:00–20:00</b>
         </p>
         <div class="note">
-          Pagos disponibles: <b>transferencia</b> o <b>efectivo</b>.
-          (Si quieres, después sumamos link de pago con Webpay/MercadoPago/Flow)
+          Pagos disponibles: <b>transferencia</b> o <b>efectivo</b>. Delivery: <b>a coordinar</b>.
         </div>
       </section>
 
       <section class="card" id="menu">
-        <h2>Menú — Postres ($2.000 c/u)</h2>
-        <p>Por ahora dejamos 5 ítems base. Tú puedes cambiar nombres y descripciones cuando quieras.</p>
+        <h2>Menú — Postres (180 ml)</h2>
+        <p>Hechos por encargo para asegurar frescura. Cierre 18:00 · Entrega al día siguiente.</p>
 
-        <div class="menu" id="menuList">
-          <!-- Items se insertan por JS -->
+        <div class="menu" id="menuList"></div>
+
+        <!-- Selector de sabores (aparece solo si eligen combos) -->
+        <div id="comboSelector" class="comboBox" style="display:none;">
+          <h2 style="margin-bottom:8px;">Elige sabores del combo</h2>
+          <p class="mini">Puedes repetir sabores. Si no eliges aquí, lo coordinamos por WhatsApp.</p>
+          <div id="comboFields" class="comboGrid cols2"></div>
         </div>
       </section>
     </div>
@@ -199,7 +222,7 @@
       <label>Dirección (si es delivery)</label>
       <input id="direccion" type="text" placeholder="Calle + número + depto/casa (si aplica)" />
 
-      <label>Notas (alergias, dedicatoria, sin algo, etc.)</label>
+      <label>Notas (alergias, dedicatoria, etc.)</label>
       <textarea id="notas" placeholder="Ej: sin frutos secos / dedicatoria: 'Feliz cumple'"></textarea>
 
       <div class="row cols2" style="align-items:end">
@@ -222,11 +245,8 @@
     <div style="height:16px"></div>
 
     <section class="card">
-      <h2>Transferencia (completar cuando quieras)</h2>
-      <p>
-        Aquí después pegas tus datos (Banco / Tipo de cuenta / N° / RUT / correo).
-        <br/>Por ahora puedes dejarlo vacío y coordinar por WhatsApp.
-      </p>
+      <h2>Transferencia</h2>
+      <p>Datos de transferencia se envían por WhatsApp al confirmar tu pedido.</p>
       <div class="note">
         Tip: cuando formalices, puedes sumar “link de pago” y el sitio no cambia.
       </div>
@@ -240,16 +260,21 @@
   <script>
     // ====== CONFIG ======
     const WHATSAPP_NUMBER = "56956059401"; // sin +, sin espacios
-    const PRICE = 2000;
 
-    // Cambia aquí los nombres cuando quieras:
+    // Productos con precios
     const PRODUCTS = [
-  { id: "p1", name: "Tiramisú", desc: "Cremoso, con café y cacao. Sabor clásico estilo DonJu." },
-  { id: "p2", name: "Cheesecake de maracuyá", desc: "Equilibrio perfecto: dulce y ácido, con toque tropical." },
-  { id: "p3", name: "Suspiro Limeño", desc: "Manjar suave y aireado, coronado con merengue delicado." },
-  { id: "p4", name: "Mousse de manjar", desc: "Textura ligera y sedosa, full manjar." },
-  { id: "p5", name: "Carlota de mango", desc: "Capas cremosas y refrescantes con mango." },
-];
+      { id: "p1", name: "Tiramisú", desc: "Cremoso, con café y cacao. Sabor clásico DonJu.", price: 2000, type: "single" },
+      { id: "p2", name: "Cheesecake de maracuyá", desc: "Dulce y ácido balanceado, toque tropical.", price: 2000, type: "single" },
+      { id: "p3", name: "Suspiro Limeño", desc: "Base de manjar suave y merengue delicado.", price: 2000, type: "single" },
+      { id: "p4", name: "Mousse de manjar", desc: "Textura ligera y sedosa, full manjar.", price: 2000, type: "single" },
+      { id: "p5", name: "Carlota de mango", desc: "Capas cremosas y refrescantes con mango.", price: 2000, type: "single" },
+
+      { id: "c3", name: "Combo 3 postres (a elección)", desc: "Elige sabores aquí o por WhatsApp. 3 x 180 ml.", price: 5500, type: "combo", picks: 3 },
+      { id: "c5", name: "Combo 5 postres (a elección)", desc: "Elige sabores aquí o por WhatsApp. 5 x 180 ml.", price: 9000, type: "combo", picks: 5 },
+    ];
+
+    const SINGLES = PRODUCTS.filter(p => p.type === "single");
+    const COMBOS  = PRODUCTS.filter(p => p.type === "combo");
 
     // ====== UI RENDER ======
     document.getElementById("year").textContent = new Date().getFullYear();
@@ -262,7 +287,7 @@
         <div>
           <strong>${p.name}</strong>
           <div style="color:var(--muted); font-size:12px">${p.desc}</div>
-          <div class="price">$${PRICE.toLocaleString("es-CL")}</div>
+          <div class="price">$${p.price.toLocaleString("es-CL")}</div>
         </div>
         <div class="qty">
           <label style="margin:0; font-size:12px; color:var(--muted)">Cant.</label>
@@ -272,17 +297,105 @@
       menuList.appendChild(el);
     });
 
+    // ====== COMBO SELECTOR ======
+    const comboSelector = document.getElementById("comboSelector");
+    const comboFields = document.getElementById("comboFields");
+
+    function getQty(id){
+      return parseInt(document.getElementById(id).value || "0", 10);
+    }
+
+    function updateComboSelector(){
+      // Total picks = suma de (qtyCombo * picks)
+      let totalPicks = 0;
+      const selectedCombos = [];
+      COMBOS.forEach(c => {
+        const q = getQty(c.id);
+        if(q > 0){
+          totalPicks += q * c.picks;
+          selectedCombos.push({ combo: c, qty: q });
+        }
+      });
+
+      if(totalPicks <= 0){
+        comboSelector.style.display = "none";
+        comboFields.innerHTML = "";
+        return;
+      }
+
+      comboSelector.style.display = "block";
+
+      // Preservar selecciones ya hechas
+      const previous = Array.from(comboFields.querySelectorAll("select")).map(s => s.value);
+
+      comboFields.innerHTML = "";
+      for(let i=0; i<totalPicks; i++){
+        const wrap = document.createElement("div");
+        wrap.innerHTML = `
+          <label>Selección ${i+1}</label>
+          <select id="pick_${i}">
+            <option value="">(Elegir sabor)</option>
+            ${SINGLES.map(s => `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`).join("")}
+          </select>
+        `;
+        comboFields.appendChild(wrap);
+      }
+
+      // Re-aplicar previos
+      const selects = comboFields.querySelectorAll("select");
+      selects.forEach((sel, idx) => {
+        if(previous[idx]) sel.value = previous[idx];
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // Escuchar cambios en cantidades (incluye combos y singles)
+    PRODUCTS.forEach(p => {
+      document.getElementById(p.id).addEventListener("input", updateComboSelector);
+    });
+
+    function getComboPicksSummary(){
+      if(comboSelector.style.display === "none") return "";
+
+      const picks = Array.from(comboFields.querySelectorAll("select"))
+        .map(s => s.value)
+        .filter(v => v && v.trim().length > 0);
+
+      if(picks.length === 0) return "Sabores combo: (sin seleccionar, a coordinar por WhatsApp)";
+
+      // Conteo
+      const count = {};
+      picks.forEach(p => count[p] = (count[p] || 0) + 1);
+
+      const parts = Object.entries(count).map(([name, n]) => `${n} x ${name}`);
+      return `Sabores combo: ${parts.join(" · ")}`;
+    }
+
+    // Inicial
+    updateComboSelector();
+
+    // ====== ORDER BUILD ======
     function buildOrderLines(){
       const lines = [];
       let total = 0;
+
       PRODUCTS.forEach(p => {
-        const qty = parseInt(document.getElementById(p.id).value || "0", 10);
+        const qty = getQty(p.id);
         if(qty > 0){
-          const sub = qty * PRICE;
+          const sub = qty * p.price;
           total += sub;
           lines.push(`- ${p.name} x${qty} = $${sub.toLocaleString("es-CL")}`);
         }
       });
+
       return { lines, total };
     }
 
@@ -305,25 +418,29 @@
 
       if(lines.length === 0){
         warnBox.style.display = "block";
-        warnBox.textContent = "Te falta elegir al menos 1 postre (cantidad mayor a 0).";
+        warnBox.textContent = "Te falta elegir al menos 1 ítem (cantidad mayor a 0).";
         return;
       }
       if(entrega.toLowerCase().includes("delivery") && !direccion){
         warnBox.style.display = "block";
-        warnBox.textContent = "Si es delivery, agrega la dirección para cotizar/coordinar.";
+        warnBox.textContent = "Si es delivery, agrega la dirección para coordinar.";
         return;
       }
+
+      const comboSummary = getComboPicksSummary();
+      const includeComboSummary = (getQty("c3") > 0 || getQty("c5") > 0);
 
       const msg =
 `Hola DonJu Gourmet 👋
 Soy: ${nombre}${telefono ? ` (Tel: ${telefono})` : ""}
 
-🧁 Pedido:
+🧁 Pedido (180 ml):
 ${lines.join("\n")}
 Total: $${total.toLocaleString("es-CL")}
+${includeComboSummary ? `\n🎁 ${comboSummary}\n` : ""}
 
 📍 Comuna: ${comuna}
-🚚 Entrega: ${entrega}
+🚚 Entrega: ${entrega} (a coordinar)
 📅 Día: ${dia}
 🕒 Hora: ${horario}
 ${direccion ? `🏠 Dirección: ${direccion}\n` : ""}💳 Pago: ${pago}
@@ -343,7 +460,12 @@ ${notas ? `📝 Notas: ${notas}\n` : ""}
       document.getElementById("direccion").value = "";
       document.getElementById("notas").value = "";
       document.getElementById("pago").value = "Transferencia";
+
       PRODUCTS.forEach(p => document.getElementById(p.id).value = 0);
+
+      comboFields.innerHTML = "";
+      comboSelector.style.display = "none";
+
       const warnBox = document.getElementById("warnBox");
       warnBox.style.display = "none";
       warnBox.textContent = "";
