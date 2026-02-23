@@ -48,7 +48,6 @@
       --r2:22px;
       --max:1020px;
 
-      /* dorado suave para bordes */
       --gold1: rgba(215,180,106,.55);
       --gold2: rgba(215,180,106,.18);
     }
@@ -192,7 +191,7 @@
     .menuList{display:grid; gap:12px}
     .item{
       display:grid;
-      grid-template-columns: 64px 1fr auto;
+      grid-template-columns: 72px 1fr auto;
       gap:12px;
       align-items:center;
       padding:12px;
@@ -201,18 +200,36 @@
       background:rgba(255,255,255,.62);
       box-shadow: 0 10px 22px rgba(30,15,10,.06);
     }
+
     .thumb{
-      width:64px; height:64px; border-radius:18px;
+      width:72px;
+      height:72px;
+      border-radius:18px;
+      overflow:hidden;
       border:1px solid rgba(40,20,10,.10);
-      background:
-        radial-gradient(26px 22px at 30% 30%, rgba(215,180,106,.22), transparent 70%),
-        radial-gradient(30px 28px at 70% 70%, rgba(42,166,161,.12), transparent 75%),
-        linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
+      background:rgba(255,255,255,.70);
+      position:relative;
     }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transform: scale(1.02);
+    }
+    .thumb::after{
+      content:"";
+      position:absolute; inset:0;
+      border-radius:18px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
+      pointer-events:none;
+    }
+
     .itemTitle{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
     .itemTitle strong{font-size:14px}
     .desc{color:var(--muted); font-size:12px; line-height:1.35; margin-top:4px}
     .priceTag{font-weight:950; color:var(--accent); font-size:13px; white-space:nowrap}
+
     .qty input{
       width:84px;
       padding:10px 10px;
@@ -556,16 +573,18 @@
 
   <script>
     const WHATSAPP_NUMBER = "56956059401";
-    const STORAGE_KEY = "donju_cart_pastel_v1";
+    const STORAGE_KEY = "donju_cart_pastel_fotos_v1";
 
+    // Productos + imágenes reales
     const PRODUCTS = [
-      { id: "p1", name: "Tiramisú", desc: "Cremoso, con café y cacao. Sabor clásico DonJu.", price: 2000, type: "single" },
-      { id: "p2", name: "Cheesecake de maracuyá", desc: "Dulce y ácido balanceado, toque tropical.", price: 2000, type: "single" },
-      { id: "p3", name: "Suspiro Limeño", desc: "Base de manjar suave y merengue delicado.", price: 2000, type: "single" },
-      { id: "p4", name: "Mousse de manjar", desc: "Textura ligera y sedosa, full manjar.", price: 2000, type: "single" },
-      { id: "p5", name: "Carlota de mango", desc: "Capas cremosas y refrescantes con mango.", price: 2000, type: "single" },
-      { id: "c3", name: "Combo 3 postres (a elección)", desc: "Elige sabores abajo o por WhatsApp. 3 x 180 ml.", price: 5500, type: "combo", picks: 3 },
-      { id: "c5", name: "Combo 5 postres (a elección)", desc: "Elige sabores abajo o por WhatsApp. 5 x 180 ml.", price: 9000, type: "combo", picks: 5 }
+      { id: "p1", name: "Tiramisú", desc: "Cremoso, con café y cacao. Sabor clásico DonJu.", price: 2000, type: "single", img: "tiramisu.jpg" },
+      { id: "p2", name: "Cheesecake de maracuyá", desc: "Dulce y ácido balanceado, toque tropical.", price: 2000, type: "single", img: "cheesecake-maracuya.jpg" },
+      { id: "p3", name: "Suspiro Limeño", desc: "Base de manjar suave y merengue delicado.", price: 2000, type: "single", img: "suspiro-limeno.jpg" },
+      { id: "p4", name: "Mousse de manjar", desc: "Textura ligera y sedosa, full manjar.", price: 2000, type: "single", img: "mousse-manjar.jpg" },
+      { id: "p5", name: "Carlota de mango", desc: "Capas cremosas y refrescantes con mango.", price: 2000, type: "single", img: "carlota-mango.jpg" },
+
+      { id: "c3", name: "Combo 3 postres (a elección)", desc: "Elige sabores abajo o por WhatsApp. 3 x 180 ml.", price: 5500, type: "combo", picks: 3, img: "combo3.jpg" },
+      { id: "c5", name: "Combo 5 postres (a elección)", desc: "Elige sabores abajo o por WhatsApp. 5 x 180 ml.", price: 9000, type: "combo", picks: 5, img: "combo5.jpg" }
     ];
 
     const SINGLES = PRODUCTS.filter(p => p.type === "single");
@@ -631,12 +650,14 @@
       if(el) el.value = String(Math.max(0, val|0));
     }
 
-    // Render menú
+    // Render menú con imágenes
     PRODUCTS.forEach(p => {
       const row = document.createElement("div");
       row.className = "item";
       row.innerHTML = `
-        <div class="thumb" aria-hidden="true"></div>
+        <div class="thumb" aria-hidden="true">
+          <img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.name)}" loading="lazy">
+        </div>
         <div>
           <div class="itemTitle">
             <strong>${escapeHtml(p.name)}</strong>
@@ -962,7 +983,7 @@ ${notas ? `📝 Notas: ${notas}\n` : ""}
     updateComboUI();
     renderAll();
 
-    // Register Service Worker (PWA)
+    // Register Service Worker (PWA) — si ya creaste sw.js
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("sw.js").catch(() => {});
