@@ -7,43 +7,23 @@
   <meta name="description" content="DonJu Gourmet: postres 180 ml por encargo. Cierre 18:00, entrega al día siguiente. La Florida, Macul, Peñalolén, Puente Alto, La Granja." />
   <meta name="theme-color" content="#fbf7f2" />
 
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.webmanifest">
-
   <!-- Open Graph -->
   <meta property="og:title" content="DonJu Gourmet — Pedidos por WhatsApp" />
   <meta property="og:description" content="Postres 180 ml · Cierre 18:00 · Entrega al día siguiente · La Florida y alrededores" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://juliohernandezm40-creator.github.io/donju-gourmet/" />
   <meta property="og:image" content="https://juliohernandezm40-creator.github.io/donju-gourmet/logo.jpg" />
-  <meta property="og:image:width" content="1024" />
-  <meta property="og:image:height" content="1024" />
 
   <link rel="icon" href="logo.jpg">
-
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FoodEstablishment",
-    "name":"DonJu Gourmet",
-    "url":"https://juliohernandezm40-creator.github.io/donju-gourmet/",
-    "servesCuisine":"Postres",
-    "areaServed":["La Florida","Macul","Peñalolén","Puente Alto","La Granja"],
-    "sameAs":["https://www.instagram.com/donju_gourmet"]
-  }
-  </script>
 
   <style>
     :root{
       --bg:#fbf7f2;
-      --panel:rgba(255,255,255,.78);
       --stroke:rgba(40,20,10,.10);
       --stroke2:rgba(40,20,10,.16);
       --text:#1b1411;
       --muted:rgba(27,20,17,.68);
       --accent:#7a4d2a;
-      --accent2:#2aa6a1;
-      --danger:#d94b4b;
       --shadow: 0 18px 45px rgba(30,15,10,.18);
       --r2:22px;
       --max:1020px;
@@ -51,7 +31,6 @@
       --gold1: rgba(215,180,106,.55);
       --gold2: rgba(215,180,106,.18);
     }
-
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
@@ -80,19 +59,12 @@
     }
     .brand{display:flex; align-items:center; gap:12px; min-width:0}
     .logo{
-      width:76px;
-      height:76px;
-      border-radius:20px;
-      overflow:hidden;
-      flex:0 0 auto;
+      width:76px; height:76px; border-radius:20px; overflow:hidden; flex:0 0 auto;
       background:rgba(255,255,255,.55);
       border:1px solid var(--gold1);
-      box-shadow:
-        0 14px 30px rgba(30,15,10,.14),
-        0 0 0 6px var(--gold2);
+      box-shadow: 0 14px 30px rgba(30,15,10,.14), 0 0 0 6px var(--gold2);
     }
     .logo img{width:100%; height:100%; object-fit:cover}
-    .brandText{min-width:0}
     .brandText h1{margin:0; font-size:18px; letter-spacing:.3px}
     .brandText small{display:block; color:var(--muted); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 
@@ -150,7 +122,7 @@
     .hero p{margin:0; color:var(--muted); line-height:1.45}
     .heroRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
 
-    /* HERO CAROUSEL */
+    /* Carrusel */
     .heroCarousel{
       display:grid;
       grid-template-columns: 44px 1fr 44px;
@@ -173,9 +145,9 @@
       overflow:hidden;
       border:1px solid var(--stroke);
       background:rgba(255,255,255,.70);
-      height:200px;
+      height:220px;
     }
-    @media(min-width:740px){ .hcFrame{height:260px} }
+    @media(min-width:740px){ .hcFrame{height:280px} }
     .hcFrame img{
       width:100%;
       height:100%;
@@ -188,7 +160,7 @@
       padding:8px 10px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.40);
-      background:rgba(255,255,255,.84);
+      background:rgba(255,255,255,.86);
       color:var(--text);
       font-weight:950;
       font-size:12px;
@@ -209,25 +181,6 @@
     .muted{color:var(--muted)}
     .hr{height:1px; background:rgba(40,20,10,.10); margin:14px 0}
 
-    .note{
-      padding:10px 12px;
-      border-radius:16px;
-      border:1px solid rgba(42,166,161,.22);
-      background:rgba(42,166,161,.10);
-      color:#0e4e4b;
-      font-size:13px;
-      line-height:1.35;
-    }
-    .warn{
-      padding:10px 12px;
-      border-radius:16px;
-      border:1px solid rgba(217,75,75,.25);
-      background:rgba(217,75,75,.10);
-      color:#7a1f1f;
-      font-size:13px;
-      line-height:1.35;
-    }
-
     .menuList{display:grid; gap:12px}
     .item{
       display:grid;
@@ -241,34 +194,15 @@
       box-shadow: 0 10px 22px rgba(30,15,10,.06);
     }
     .thumb{
-      width:72px;
-      height:72px;
-      border-radius:18px;
-      overflow:hidden;
+      width:72px; height:72px; border-radius:18px; overflow:hidden;
       border:1px solid rgba(40,20,10,.10);
       background:rgba(255,255,255,.70);
-      position:relative;
     }
-    .thumb img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      transform: scale(1.02);
-    }
-    .thumb::after{
-      content:"";
-      position:absolute; inset:0;
-      border-radius:18px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
-      pointer-events:none;
-    }
-
+    .thumb img{width:100%; height:100%; object-fit:cover; display:block}
     .itemTitle{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
     .itemTitle strong{font-size:14px}
     .desc{color:var(--muted); font-size:12px; line-height:1.35; margin-top:4px}
     .priceTag{font-weight:950; color:var(--accent); font-size:13px; white-space:nowrap}
-
     .qty input{
       width:84px;
       padding:10px 10px;
@@ -299,110 +233,14 @@
     #comboFields{display:grid; gap:12px}
     @media(min-width:740px){ #comboFields{grid-template-columns:1fr 1fr} }
 
-    .drawerBackdrop{
-      position:fixed; inset:0;
-      background:rgba(30,15,10,.35);
-      display:none;
-      z-index:80;
-    }
-    .drawer{
-      position:fixed;
-      top:0; right:0;
-      height:100%;
-      width:min(420px, 92vw);
-      background:rgba(255,255,255,.88);
-      border-left:1px solid var(--stroke);
-      backdrop-filter: blur(14px);
-      box-shadow: -12px 0 45px rgba(30,15,10,.20);
-      transform: translateX(100%);
-      transition: transform .22s ease;
-      z-index:90;
-      display:flex;
-      flex-direction:column;
-      color:var(--text);
-    }
-    .drawer.open{transform: translateX(0)}
-    .drawerHeader{
-      padding:14px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      border-bottom:1px solid rgba(40,20,10,.10);
-    }
-    .drawerBody{padding:14px; overflow:auto}
-    .cartLine{
-      display:flex; justify-content:space-between; gap:10px;
-      padding:10px 0;
-      border-bottom:1px dashed rgba(40,20,10,.12);
-      color:var(--muted);
-      font-size:13px;
-    }
-    .cartLine b{color:var(--text); font-weight:950}
-    .drawerFooter{
-      padding:14px;
-      border-top:1px solid rgba(40,20,10,.10);
-      display:grid; gap:10px;
-    }
-    .total{
-      display:flex; justify-content:space-between; align-items:center;
-      font-weight:950;
-      color:var(--text);
-    }
-    .total span:last-child{color:var(--accent)}
-    .tiny{font-size:12px; color:var(--muted); line-height:1.35}
-
-    .floatBar{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:14px;
-      z-index:70;
-      width:min(var(--max), 94vw);
-      border-radius:999px;
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.78);
-      backdrop-filter: blur(14px);
-      box-shadow: var(--shadow);
+    .warn{
       padding:10px 12px;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-    }
-    .floatBar .left{display:flex; align-items:center; gap:10px; min-width:0}
-    .floatBar .left .count{
-      width:34px; height:34px; border-radius:999px;
-      display:grid; place-items:center;
-      border:1px solid var(--gold1);
-      background:rgba(215,180,106,.12);
-      font-weight:950;
-    }
-    .floatBar .left .summary{
-      min-width:0;
-      color:var(--muted);
-      font-size:12px;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-
-    .toast{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:86px;
-      z-index:200;
-      display:none;
-      max-width:92vw;
-      background:rgba(255,255,255,.92);
-      border:1px solid rgba(40,20,10,.12);
       border-radius:16px;
-      padding:12px 14px;
-      box-shadow: var(--shadow);
-      color:var(--text);
-    }
-    .toast b{display:block}
-    .toast small{color:var(--muted)}
-
-    footer{padding:26px 0 110px; color:var(--muted); font-size:12px}
-
-    @media(prefers-reduced-motion: reduce){
-      *{scroll-behavior:auto}
-      .drawer{transition:none}
-      .btn{transition:none}
+      border:1px solid rgba(217,75,75,.25);
+      background:rgba(217,75,75,.10);
+      color:#7a1f1f;
+      font-size:13px;
+      line-height:1.35;
     }
   </style>
 </head>
@@ -419,7 +257,6 @@
       </div>
       <div class="actions">
         <a class="btn ghost" href="https://www.instagram.com/donju_gourmet" target="_blank" rel="noreferrer">Instagram</a>
-        <button class="btn" id="btnOpenCart" type="button">Carrito</button>
         <a class="btn primary" href="#pedido">Pedir</a>
       </div>
     </div>
@@ -437,7 +274,7 @@
         <span class="pill">🎁 Combos: 3 y 5</span>
       </div>
 
-      <!-- Carrusel (sin onclick) -->
+      <!-- Carrusel -->
       <div class="heroCarousel" aria-label="Galería de productos">
         <button class="hcBtn" id="hcPrevBtn" type="button">‹</button>
         <div class="hcFrame">
@@ -461,146 +298,315 @@
           <p class="muted" style="margin-top:-6px;">Puedes repetir sabores. Si lo dejas en blanco, lo coordinamos por WhatsApp.</p>
           <div id="comboFields"></div>
         </div>
-
-        <div class="hr"></div>
-
-        <div class="note">
-          Tip rápido: si quieres repetir sabores en combo, selecciona el mismo sabor varias veces ✅
-        </div>
       </section>
 
-      <section class="card">
-        <h3>Resumen en vivo</h3>
-        <p class="muted" style="margin-top:-6px;">Tu carrito se guarda automáticamente (si cierras el navegador, no se pierde).</p>
-        <div id="liveSummary" class="muted"></div>
+      <section class="card" id="pedido">
+        <h3>Datos del pedido</h3>
+        <p class="muted">Se abrirá WhatsApp con el pedido armado.</p>
 
-        <div class="hr"></div>
+        <div class="row cols2">
+          <div>
+            <label>Nombre</label>
+            <input id="nombre" type="text" placeholder="Ej: Camila" autocomplete="name" />
+          </div>
+          <div>
+            <label>Teléfono (opcional)</label>
+            <input id="telefono" type="tel" placeholder="Ej: +56 9 1234 5678" autocomplete="tel" />
+          </div>
+        </div>
 
-        <h3>FAQ rápido</h3>
-        <p class="muted"><b>¿Tamaño?</b> Vasos de 180 ml.</p>
-        <p class="muted"><b>¿Cuándo entregan?</b> Cierre 18:00 y entrega al día siguiente (horario a coordinar).</p>
-        <p class="muted"><b>¿Transferencia?</b> Los datos se envían por WhatsApp al confirmar.</p>
-        <p class="muted"><b>Conservación:</b> Refrigerado. Ideal 48–72 horas.</p>
+        <div class="row cols2">
+          <div>
+            <label>Comuna</label>
+            <select id="comuna">
+              <option>La Florida</option>
+              <option>Macul</option>
+              <option>Peñalolén</option>
+              <option>Puente Alto</option>
+              <option>La Granja</option>
+            </select>
+          </div>
+          <div>
+            <label>Método de entrega</label>
+            <select id="entrega">
+              <option>Delivery (a coordinar)</option>
+              <option>Retiro (a coordinar)</option>
+            </select>
+            <div class="mini" id="entregaHint"></div>
+          </div>
+        </div>
 
-        <div class="hr"></div>
+        <div class="row cols2">
+          <div>
+            <label>Día de entrega</label>
+            <input id="dia" type="text" placeholder="Ej: Mañana / 24-02" />
+          </div>
+          <div>
+            <label>Horario estimado</label>
+            <input id="horario" type="text" placeholder="Ej: 18:30" />
+          </div>
+        </div>
 
-        <div class="note">
-          Pagos: transferencia o efectivo · Delivery: a coordinar según dirección
+        <div id="addressBlock">
+          <label>Dirección (si es delivery)</label>
+          <input id="direccion" type="text" placeholder="Calle + número + depto/casa" autocomplete="street-address" />
+        </div>
+
+        <label>Notas</label>
+        <textarea id="notas" placeholder="Alergias / dedicatoria / detalles del combo"></textarea>
+
+        <div class="row cols2" style="align-items:end">
+          <div>
+            <label>Método de pago</label>
+            <select id="pago">
+              <option>Transferencia</option>
+              <option>Efectivo</option>
+            </select>
+            <div style="height:10px"></div>
+            <div class="warn" id="warnBox" style="display:none"></div>
+          </div>
+          <div style="display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap">
+            <button class="btn ghost" id="btnClear" type="button">Limpiar</button>
+            <button class="btn primary" id="btnSend" type="button">Enviar por WhatsApp</button>
+          </div>
         </div>
       </section>
     </div>
 
-    <div style="height:16px"></div>
-
-    <section class="card" id="pedido">
-      <h3>Datos del pedido</h3>
-      <p class="muted">Al final se abrirá WhatsApp con el pedido armado. Si tu navegador bloquea la ventana, podrás <b>copiar</b> el pedido.</p>
-
-      <div class="row cols2">
-        <div>
-          <label>Nombre</label>
-          <input id="nombre" type="text" placeholder="Ej: Camila" autocomplete="name" />
-        </div>
-        <div>
-          <label>Teléfono (opcional)</label>
-          <input id="telefono" type="tel" placeholder="Ej: +56 9 1234 5678" autocomplete="tel" />
-        </div>
-      </div>
-
-      <div class="row cols2">
-        <div>
-          <label>Comuna</label>
-          <select id="comuna">
-            <option>La Florida</option>
-            <option>Macul</option>
-            <option>Peñalolén</option>
-            <option>Puente Alto</option>
-            <option>La Granja</option>
-          </select>
-        </div>
-        <div>
-          <label>Método de entrega</label>
-          <select id="entrega">
-            <option>Delivery (a coordinar)</option>
-            <option>Retiro (a coordinar)</option>
-          </select>
-          <div class="mini" id="entregaHint"></div>
-        </div>
-      </div>
-
-      <div class="row cols2">
-        <div>
-          <label>Día de entrega (día siguiente al cierre 18:00)</label>
-          <input id="dia" type="text" placeholder="Ej: Mañana / Miércoles / 24-02" />
-          <div class="mini" id="diaHint"></div>
-        </div>
-        <div>
-          <label>Horario estimado</label>
-          <input id="horario" type="text" placeholder="Ej: 18:30 (L-V) / 12:00 (fin de semana)" />
-        </div>
-      </div>
-
-      <div id="addressBlock">
-        <label>Dirección (si es delivery)</label>
-        <input id="direccion" type="text" placeholder="Calle + número + depto/casa (si aplica)" autocomplete="street-address" />
-      </div>
-
-      <label>Notas (alergias, dedicatoria, etc.)</label>
-      <textarea id="notas" placeholder="Ej: sin frutos secos / dedicatoria: 'Feliz cumple' (si pediste combo, puedes detallar aquí también)"></textarea>
-
-      <div class="row cols2" style="align-items:end">
-        <div>
-          <label>Método de pago</label>
-          <select id="pago">
-            <option>Transferencia</option>
-            <option>Efectivo</option>
-          </select>
-          <div style="height:10px"></div>
-          <div class="warn" id="warnBox" style="display:none"></div>
-        </div>
-        <div style="display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap">
-          <button class="btn ghost" id="btnCopy" type="button">Copiar pedido</button>
-          <button class="btn ghost" id="btnClear" type="button">Limpiar</button>
-          <button class="btn primary" id="btnSend" type="button">Enviar por WhatsApp</button>
-        </div>
-      </div>
-    </section>
-
-    <footer>
+    <footer style="padding:26px 0; color:var(--muted); font-size:12px">
       © <span id="year"></span> DonJu Gourmet · Instagram:
       <a href="https://www.instagram.com/donju_gourmet" target="_blank" rel="noreferrer">@donju_gourmet</a>
       · WhatsApp: +56 9 5605 9401
     </footer>
   </div>
 
-  <div class="drawerBackdrop" id="drawerBackdrop"></div>
-  <aside class="drawer" id="drawer" aria-label="Carrito">
-    <div class="drawerHeader">
-      <strong>Carrito</strong>
-      <button class="btn ghost" id="btnCloseCart" type="button">Cerrar</button>
-    </div>
-    <div class="drawerBody">
-      <div id="cartLines"></div>
-      <div class="hr"></div>
-      <div class="tiny">
-        Combos: si no eliges sabores, se coordina por WhatsApp.<br/>
-        Delivery: a coordinar según dirección.
-      </div>
-    </div>
-    <div class="drawerFooter">
-      <div class="total">
-        <span>Total</span>
-        <span id="cartTotal">$0</span>
-      </div>
-      <button class="btn primary" type="button" onclick="document.getElementById('pedido').scrollIntoView({behavior:'smooth'})">Ir a datos del pedido</button>
-    </div>
-  </aside>
+  <script>
+    // ====== UTIL ======
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+    function money(n){ return `$${Number(n||0).toLocaleString("es-CL")}`; }
 
-  <div class="floatBar" id="floatBar">
-    <div class="left">
-      <div class="count" id="floatCount">0</div>
-      <div class="summary" id="floatSummary">Sin productos seleccionados.</div>
-    </div>
-    <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
-      <button class="btn" id="btnWhatsAppQuick" type="button">WhatsApp</button>
-      <button class="btn primary" id
+    // ====== DATA ======
+    const WHATSAPP_NUMBER = "56956059401";
+    const PRODUCTS = [
+      { id:"p1", name:"Tiramisú", desc:"Cremoso, con café y cacao.", price:2000, type:"single", img:"tiramisu.jpg" },
+      { id:"p2", name:"Cheesecake de maracuyá", desc:"Dulce y ácido balanceado.", price:2000, type:"single", img:"cheesecake-maracuya.jpg" },
+      { id:"p3", name:"Suspiro Limeño", desc:"Manjar + merengue delicado.", price:2000, type:"single", img:"suspiro-limeno.jpg" },
+      { id:"p4", name:"Mousse de manjar", desc:"Textura ligera y sedosa.", price:2000, type:"single", img:"mousse-manjar.jpg" },
+      { id:"p5", name:"Carlota de mango", desc:"Cremoso y refrescante.", price:2000, type:"single", img:"carlota-mango.jpg" },
+      { id:"c3", name:"Combo 3 (a elección)", desc:"3 x 180 ml.", price:5500, type:"combo", picks:3, img:"combo3.jpg" },
+      { id:"c5", name:"Combo 5 (a elección)", desc:"5 x 180 ml.", price:9000, type:"combo", picks:5, img:"combo5.jpg" }
+    ];
+    const SINGLES = PRODUCTS.filter(p => p.type === "single");
+    const COMBOS = PRODUCTS.filter(p => p.type === "combo");
+
+    // ====== YEAR ======
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ====== RENDER MENU ======
+    const menuList = document.getElementById("menuList");
+    PRODUCTS.forEach(p=>{
+      const row = document.createElement("div");
+      row.className = "item";
+      row.innerHTML = `
+        <div class="thumb"><img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.name)}" loading="lazy"></div>
+        <div>
+          <div class="itemTitle">
+            <strong>${escapeHtml(p.name)}</strong>
+            <span class="priceTag">${money(p.price)}</span>
+          </div>
+          <div class="desc">${escapeHtml(p.desc)}</div>
+        </div>
+        <div class="qty">
+          <input id="${p.id}" type="number" min="0" value="0" inputmode="numeric">
+        </div>
+      `;
+      menuList.appendChild(row);
+    });
+
+    // ====== COMBOS (selectors) ======
+    const comboBox = document.getElementById("comboBox");
+    const comboFields = document.getElementById("comboFields");
+
+    function getQty(id){
+      return parseInt(document.getElementById(id).value || "0", 10) || 0;
+    }
+
+    function updateComboUI(){
+      let totalPicks = 0;
+      COMBOS.forEach(c => totalPicks += getQty(c.id) * c.picks);
+
+      if(totalPicks <= 0){
+        comboBox.style.display = "none";
+        comboFields.innerHTML = "";
+        return;
+      }
+
+      comboBox.style.display = "block";
+      comboFields.innerHTML = "";
+      for(let i=0;i<totalPicks;i++){
+        const wrap = document.createElement("div");
+        wrap.innerHTML = `
+          <label>Selección ${i+1}</label>
+          <select id="pick_${i}">
+            <option value="">(Elegir sabor)</option>
+            ${SINGLES.map(s => `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`).join("")}
+          </select>
+        `;
+        comboFields.appendChild(wrap);
+      }
+    }
+
+    PRODUCTS.forEach(p=>{
+      document.getElementById(p.id).addEventListener("input", updateComboUI);
+    });
+
+    function comboSummary(){
+      if(comboBox.style.display === "none") return "";
+      const picks = Array.from(comboFields.querySelectorAll("select")).map(s=>s.value).filter(Boolean);
+      if(!picks.length) return "Sabores combo: (sin seleccionar, a coordinar)";
+      const c = {};
+      picks.forEach(x=>c[x]=(c[x]||0)+1);
+      return "Sabores combo: " + Object.entries(c).map(([n,k])=>`${k} x ${n}`).join(" · ");
+    }
+
+    // ====== ENTREGA UI ======
+    const entregaEl = document.getElementById("entrega");
+    const addressBlock = document.getElementById("addressBlock");
+    const entregaHint = document.getElementById("entregaHint");
+    function updateEntrega(){
+      const isDelivery = entregaEl.value.toLowerCase().includes("delivery");
+      addressBlock.style.display = isDelivery ? "block" : "none";
+      entregaHint.textContent = isDelivery ? "Agrega dirección para coordinar." : "Coordinamos retiro por WhatsApp.";
+    }
+    entregaEl.addEventListener("change", updateEntrega);
+    updateEntrega();
+
+    // ====== WHATSAPP ======
+    function buildOrderLines(){
+      const lines = [];
+      let total = 0;
+      PRODUCTS.forEach(p=>{
+        const q = getQty(p.id);
+        if(q>0){
+          const sub = q * p.price;
+          total += sub;
+          lines.push(`- ${p.name} x${q} = ${money(sub)}`);
+        }
+      });
+      return { lines, total };
+    }
+
+    document.getElementById("btnClear").addEventListener("click", ()=>{
+      PRODUCTS.forEach(p=>document.getElementById(p.id).value = 0);
+      comboFields.innerHTML = "";
+      comboBox.style.display = "none";
+      ["nombre","telefono","dia","horario","direccion","notas"].forEach(id=>document.getElementById(id).value="");
+      document.getElementById("warnBox").style.display="none";
+      updateEntrega();
+    });
+
+    document.getElementById("btnSend").addEventListener("click", ()=>{
+      const warnBox = document.getElementById("warnBox");
+      warnBox.style.display="none";
+      warnBox.textContent="";
+
+      const { lines, total } = buildOrderLines();
+      if(!lines.length){
+        warnBox.style.display="block";
+        warnBox.textContent="Te falta elegir al menos 1 ítem.";
+        return;
+      }
+
+      const nombre = document.getElementById("nombre").value.trim() || "(sin nombre)";
+      const telefono = document.getElementById("telefono").value.trim();
+      const comuna = document.getElementById("comuna").value;
+      const entrega = document.getElementById("entrega").value;
+      const dia = document.getElementById("dia").value.trim() || "(sin fecha)";
+      const horario = document.getElementById("horario").value.trim() || "(sin horario)";
+      const direccion = document.getElementById("direccion").value.trim();
+      const notas = document.getElementById("notas").value.trim();
+      const pago = document.getElementById("pago").value;
+
+      const isDelivery = entrega.toLowerCase().includes("delivery");
+      if(isDelivery && !direccion){
+        warnBox.style.display="block";
+        warnBox.textContent="Si es delivery, agrega dirección.";
+        return;
+      }
+
+      const comboUsed = (getQty("c3")>0 || getQty("c5")>0);
+      const comboText = comboUsed ? `\n🎁 ${comboSummary()}\n` : "";
+
+      const msg =
+`Hola DonJu Gourmet 👋
+Soy: ${nombre}${telefono ? ` (Tel: ${telefono})` : ""}
+
+🧁 Pedido (180 ml):
+${lines.join("\n")}
+Total: ${money(total)}
+${comboText}
+📍 Comuna: ${comuna}
+🚚 Entrega: ${entrega} (a coordinar)
+📅 Día: ${dia}
+🕒 Hora: ${horario}
+${isDelivery ? `🏠 Dirección: ${direccion}\n` : ""}💳 Pago: ${pago}
+${notas ? `📝 Notas: ${notas}\n` : ""}
+
+(Cierre 18:00 · Entrega al día siguiente ✅)`;
+
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+    });
+
+    // ====== CARRUSEL (FUNCIONA SÍ O SÍ) ======
+    const HERO_SLIDES = [
+      { src: "tiramisu.jpg", label: "Tiramisú" },
+      { src: "cheesecake-maracuya.jpg", label: "Cheesecake de maracuyá" },
+      { src: "suspiro-limeno.jpg", label: "Suspiro Limeño" },
+      { src: "mousse-manjar.jpg", label: "Mousse de manjar" },
+      { src: "carlota-mango.jpg", label: "Carlota de mango" },
+      { src: "combo3.jpg", label: "Combo 3" },
+      { src: "combo5.jpg", label: "Combo 5" }
+    ];
+
+    let hcIndex = 0;
+    let hcTimer = null;
+
+    function hcRender(){
+      const img = document.getElementById("hcImg");
+      const cap = document.getElementById("hcCaption");
+      if(!img || !cap) return;
+      img.src = HERO_SLIDES[hcIndex].src;
+      img.alt = HERO_SLIDES[hcIndex].label;
+      cap.textContent = HERO_SLIDES[hcIndex].label;
+    }
+
+    function hcPrev(){
+      hcIndex = (hcIndex - 1 + HERO_SLIDES.length) % HERO_SLIDES.length;
+      hcRender();
+      hcStart();
+    }
+    function hcNext(){
+      hcIndex = (hcIndex + 1) % HERO_SLIDES.length;
+      hcRender();
+      hcStart();
+    }
+    function hcStart(){
+      if(hcTimer) clearInterval(hcTimer);
+      hcTimer = setInterval(hcNext, 3500);
+    }
+
+    document.getElementById("hcPrevBtn").addEventListener("click", hcPrev);
+    document.getElementById("hcNextBtn").addEventListener("click", hcNext);
+
+    hcRender();
+    hcStart();
+  </script>
+</body>
+</html>
