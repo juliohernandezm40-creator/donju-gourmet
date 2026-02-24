@@ -437,14 +437,14 @@
         <span class="pill">🎁 Combos: 3 y 5</span>
       </div>
 
-      <!-- Carrusel -->
+      <!-- Carrusel (sin onclick) -->
       <div class="heroCarousel" aria-label="Galería de productos">
-        <button class="hcBtn" type="button" onclick="hcPrev()">‹</button>
+        <button class="hcBtn" id="hcPrevBtn" type="button">‹</button>
         <div class="hcFrame">
           <img id="hcImg" src="tiramisu.jpg" alt="Tiramisú" loading="eager">
           <div class="hcCaption" id="hcCaption">Tiramisú</div>
         </div>
-        <button class="hcBtn" type="button" onclick="hcNext()">›</button>
+        <button class="hcBtn" id="hcNextBtn" type="button">›</button>
       </div>
     </section>
 
@@ -603,4 +603,4 @@
     </div>
     <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
       <button class="btn" id="btnWhatsAppQuick" type="button">WhatsApp</button>
-      <button class="btn primary" id="btnO
+      <button class="btn primary" id
