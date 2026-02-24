@@ -32,6 +32,8 @@
       --gold1: rgba(215,180,106,.55);
       --gold2: rgba(215,180,106,.18);
       --focus: rgba(122,77,42,.35);
+      --wa: rgba(37, 211, 102, .22);
+      --waStroke: rgba(37, 211, 102, .45);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -135,6 +137,7 @@
       box-shadow: 0 10px 24px rgba(30,15,10,.08);
       font-size:14px;
       min-height:44px;
+      line-height:1;
     }
     .btn:hover{ background: rgba(255,255,255,.95); }
     .btn:active{transform:scale(.98)}
@@ -150,6 +153,21 @@
       background:transparent;
       border-color: var(--stroke);
       box-shadow:none;
+    }
+
+    /* Botón WhatsApp con ícono */
+    .btn.whatsapp{
+      border-color: var(--waStroke);
+      background: linear-gradient(180deg, rgba(37,211,102,.18), rgba(37,211,102,.10));
+    }
+    .btn.whatsapp:hover{
+      background: linear-gradient(180deg, rgba(37,211,102,.26), rgba(37,211,102,.14));
+    }
+    .waIcon{
+      width:18px;
+      height:18px;
+      display:block;
+      flex:0 0 auto;
     }
 
     .pill{
@@ -330,7 +348,6 @@
       margin-top:8px;
     }
 
-    /* ✅ B1: Resumen en vivo */
     .orderSummary{
       margin-top:16px;
       padding:14px;
@@ -379,7 +396,16 @@
         <small>Un gusto que enamora · Cierre 18:00 · Entrega al día siguiente · 180 ml</small>
       </div>
     </div>
+
     <div class="actions">
+      <button class="btn whatsapp" id="waBtn" type="button" aria-label="Abrir WhatsApp">
+        <svg class="waIcon" viewBox="0 0 32 32" aria-hidden="true">
+          <path fill="currentColor" d="M19.11 17.53c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.62.14-.18.27-.71.88-.87 1.06-.16.18-.32.2-.59.07-.27-.14-1.15-.42-2.19-1.34-.81-.72-1.36-1.6-1.52-1.87-.16-.27-.02-.42.12-.56.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.47h-.53c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.29 0 1.35.98 2.65 1.12 2.83.14.18 1.93 2.95 4.68 4.14.65.28 1.16.45 1.56.58.66.21 1.26.18 1.73.11.53-.08 1.6-.65 1.83-1.28.23-.62.23-1.16.16-1.28-.07-.12-.25-.2-.52-.34z"/>
+          <path fill="currentColor" d="M26.7 5.3A13.34 13.34 0 0 0 16.02 1C8.7 1 2.76 6.94 2.76 14.26c0 2.33.61 4.6 1.77 6.6L2.65 31l10.34-1.81a13.2 13.2 0 0 0 3.03.35h.01c7.32 0 13.26-5.94 13.26-13.26 0-3.54-1.38-6.87-3.59-9.0zM16.03 27.3h-.01c-1.02 0-2.02-.15-2.97-.43l-.68-.2-6.13 1.07 1.09-5.97-.24-.73a11 11 0 0 1-1.07-4.79c0-6.07 4.94-11.01 11.01-11.01 2.94 0 5.7 1.15 7.77 3.22a10.9 10.9 0 0 1 3.23 7.78c0 6.07-4.94 11.01-11.01 11.01z"/>
+        </svg>
+        WhatsApp
+      </button>
+
       <a class="btn ghost" id="igBtn" href="https://www.instagram.com/donju_gourmet/" target="_blank" rel="noopener noreferrer">Instagram</a>
       <a class="btn primary" href="#pedido">Pedir</a>
     </div>
@@ -423,7 +449,6 @@
           <div id="comboFields"></div>
         </div>
 
-        <!-- ✅ Resumen en vivo -->
         <div class="orderSummary" id="orderSummary">
           <h4>📋 Tu pedido</h4>
           <ul id="summaryItems"></ul>
@@ -521,6 +546,13 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    const WHATSAPP_NUMBER = "56956059401";
+
+    // Botón WhatsApp directo (chat sin pedido)
+    document.getElementById("waBtn").addEventListener("click", () => {
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola DonJu Gourmet 👋 Quiero hacer una consulta.")}`, "_blank");
+    });
+
     // Instagram: app + fallback web
     (function fixInstagramLink(){
       const igBtn = document.getElementById("igBtn");
@@ -533,8 +565,6 @@
         setTimeout(() => window.open(webUrl, "_blank"), 800);
       });
     })();
-
-    const WHATSAPP_NUMBER = "56956059401";
 
     const PRODUCTS = [
       { id:"p1", name:"Tiramisú", desc:"Cremoso, con café y cacao.", price:2000, type:"single", img:"tiramisu.jpg" },
@@ -588,7 +618,6 @@
       }
 
       comboBox.style.display = "block";
-      // guardar selección previa si existe
       const prev = Array.from(comboFields.querySelectorAll("select")).map(s => s.value || "");
       comboFields.innerHTML = "";
 
@@ -604,11 +633,8 @@
         comboFields.appendChild(wrap);
       }
 
-      // restaurar valores anteriores
       const sels = comboFields.querySelectorAll("select");
       sels.forEach((s, i) => { if(prev[i]) s.value = prev[i]; });
-
-      // al cambiar sabor, actualiza resumen
       sels.forEach(s => s.addEventListener("change", updateSummary));
     }
 
@@ -624,7 +650,7 @@
     entregaEl.addEventListener("change", () => { updateEntrega(); updateSummary(); });
     updateEntrega();
 
-    // B1: Resumen en vivo
+    // Resumen en vivo + subtotales
     const orderSummary = document.getElementById("orderSummary");
     const summaryItems = document.getElementById("summaryItems");
     const summaryTotal = document.getElementById("summaryTotal");
@@ -654,10 +680,12 @@
       }
 
       orderSummary.style.display = "block";
-      summaryItems.innerHTML = lines.map(l => `<li>${escapeHtml(l.name)} x${l.qty}</li>`).join("");
+      summaryItems.innerHTML = lines
+        .map(l => `<li>${escapeHtml(l.name)} x${l.qty} — <strong>${escapeHtml(money(l.sub))}</strong></li>`)
+        .join("");
+
       summaryTotal.textContent = money(total);
 
-      // si hay combo, mostrar mini resumen de sabores
       const comboUsed = (getQty("c3")>0 || getQty("c5")>0);
       if(comboUsed){
         const picks = Array.from(comboFields.querySelectorAll("select")).map(s=>s.value).filter(Boolean);
@@ -672,7 +700,6 @@
       }
     }
 
-    // listeners: cantidades
     PRODUCTS.forEach(p=>{
       document.getElementById(p.id).addEventListener("input", () => {
         updateComboUI();
@@ -680,7 +707,7 @@
       });
     });
 
-    // WhatsApp
+    // WhatsApp pedido
     const warnBox = document.getElementById("warnBox");
 
     function comboSummary(){
@@ -794,7 +821,7 @@ ${notas ? `📝 Notas: ${notas}\n` : ""}
 
     hcRender(); hcStart();
 
-    // init resumen
+    // init
     updateComboUI();
     updateSummary();
   </script>
