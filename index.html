@@ -41,8 +41,8 @@
       --stroke2:rgba(40,20,10,.16);
       --text:#1b1411;
       --muted:rgba(27,20,17,.68);
-      --accent:#7a4d2a;      /* café DonJu */
-      --accent2:#2aa6a1;     /* turquesa pañuelo */
+      --accent:#7a4d2a;
+      --accent2:#2aa6a1;
       --danger:#d94b4b;
       --shadow: 0 18px 45px rgba(30,15,10,.18);
       --r2:22px;
@@ -67,7 +67,6 @@
     a{color:inherit}
     .wrap{max-width:var(--max); margin:0 auto; padding:22px}
 
-    /* Topbar */
     .topbar{
       position:sticky; top:12px; z-index:50;
       display:flex; align-items:center; justify-content:space-between;
@@ -137,7 +136,6 @@
       box-shadow: 0 10px 22px rgba(30,15,10,.06);
     }
 
-    /* Hero */
     .hero{
       margin-top:16px;
       padding:18px;
@@ -152,10 +150,53 @@
     .hero p{margin:0; color:var(--muted); line-height:1.45}
     .heroRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
 
+    /* HERO CAROUSEL */
+    .heroCarousel{
+      display:grid;
+      grid-template-columns: 44px 1fr 44px;
+      gap:10px;
+      align-items:center;
+      margin-top:10px;
+    }
+    .hcBtn{
+      height:44px;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.70);
+      color:var(--text);
+      font-weight:950;
+      cursor:pointer;
+    }
+    .hcFrame{
+      position:relative;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.70);
+      height:200px;
+    }
+    @media(min-width:740px){ .hcFrame{height:260px} }
+    .hcFrame img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .hcCaption{
+      position:absolute;
+      left:10px; bottom:10px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.40);
+      background:rgba(255,255,255,.84);
+      color:var(--text);
+      font-weight:950;
+      font-size:12px;
+    }
+
     .grid{display:grid; gap:16px; margin-top:16px}
     @media(min-width:980px){ .grid.cols2{grid-template-columns: 1.1fr .9fr} }
 
-    /* Cards */
     .card{
       border-radius:var(--r2);
       border:1px solid var(--stroke);
@@ -187,7 +228,6 @@
       line-height:1.35;
     }
 
-    /* Menu */
     .menuList{display:grid; gap:12px}
     .item{
       display:grid;
@@ -200,7 +240,6 @@
       background:rgba(255,255,255,.62);
       box-shadow: 0 10px 22px rgba(30,15,10,.06);
     }
-
     .thumb{
       width:72px;
       height:72px;
@@ -241,7 +280,6 @@
       font-weight:950;
     }
 
-    /* Form */
     label{display:block; font-size:12px; color:var(--muted); margin:10px 0 6px}
     input[type="text"], input[type="tel"], select, textarea{
       width:100%;
@@ -257,12 +295,10 @@
     @media(min-width:740px){ .row.cols2{grid-template-columns:1fr 1fr} }
     .mini{font-size:12px; color:var(--muted); margin-top:6px}
 
-    /* Combo fields */
     #comboBox{display:none}
     #comboFields{display:grid; gap:12px}
     @media(min-width:740px){ #comboFields{grid-template-columns:1fr 1fr} }
 
-    /* Drawer */
     .drawerBackdrop{
       position:fixed; inset:0;
       background:rgba(30,15,10,.35);
@@ -313,7 +349,6 @@
     .total span:last-child{color:var(--accent)}
     .tiny{font-size:12px; color:var(--muted); line-height:1.35}
 
-    /* Floating bar */
     .floatBar{
       position:fixed;
       left:50%;
@@ -344,7 +379,6 @@
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
 
-    /* Toast */
     .toast{
       position:fixed;
       left:50%;
@@ -401,6 +435,16 @@
         <span class="pill">📍 La Florida · Macul · Peñalolén · Puente Alto · La Granja</span>
         <span class="pill">🧁 Porción: 180 ml</span>
         <span class="pill">🎁 Combos: 3 y 5</span>
+      </div>
+
+      <!-- Carrusel -->
+      <div class="heroCarousel" aria-label="Galería de productos">
+        <button class="hcBtn" type="button" onclick="hcPrev()">‹</button>
+        <div class="hcFrame">
+          <img id="hcImg" src="tiramisu.jpg" alt="Tiramisú" loading="eager">
+          <div class="hcCaption" id="hcCaption">Tiramisú</div>
+        </div>
+        <button class="hcBtn" type="button" onclick="hcNext()">›</button>
       </div>
     </section>
 
@@ -529,7 +573,6 @@
     </footer>
   </div>
 
-  <!-- Drawer -->
   <div class="drawerBackdrop" id="drawerBackdrop"></div>
   <aside class="drawer" id="drawer" aria-label="Carrito">
     <div class="drawerHeader">
@@ -553,7 +596,6 @@
     </div>
   </aside>
 
-  <!-- Floating bar -->
   <div class="floatBar" id="floatBar">
     <div class="left">
       <div class="count" id="floatCount">0</div>
@@ -561,434 +603,4 @@
     </div>
     <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
       <button class="btn" id="btnWhatsAppQuick" type="button">WhatsApp</button>
-      <button class="btn primary" id="btnOpenCart2" type="button">Ver carrito</button>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div class="toast" id="toast">
-    <b id="toastTitle">Listo ✅</b>
-    <small id="toastMsg">Abriendo WhatsApp…</small>
-  </div>
-
-  <script>
-    const WHATSAPP_NUMBER = "56956059401";
-    const STORAGE_KEY = "donju_cart_pastel_fotos_v1";
-
-    // Productos + imágenes reales
-    const PRODUCTS = [
-      { id: "p1", name: "Tiramisú", desc: "Cremoso, con café y cacao. Sabor clásico DonJu.", price: 2000, type: "single", img: "tiramisu.jpg" },
-      { id: "p2", name: "Cheesecake de maracuyá", desc: "Dulce y ácido balanceado, toque tropical.", price: 2000, type: "single", img: "cheesecake-maracuya.jpg" },
-      { id: "p3", name: "Suspiro Limeño", desc: "Base de manjar suave y merengue delicado.", price: 2000, type: "single", img: "suspiro-limeno.jpg" },
-      { id: "p4", name: "Mousse de manjar", desc: "Textura ligera y sedosa, full manjar.", price: 2000, type: "single", img: "mousse-manjar.jpg" },
-      { id: "p5", name: "Carlota de mango", desc: "Capas cremosas y refrescantes con mango.", price: 2000, type: "single", img: "carlota-mango.jpg" },
-
-      { id: "c3", name: "Combo 3 postres (a elección)", desc: "Elige sabores abajo o por WhatsApp. 3 x 180 ml.", price: 5500, type: "combo", picks: 3, img: "combo3.jpg" },
-      { id: "c5", name: "Combo 5 postres (a elección)", desc: "Elige sabores abajo o por WhatsApp. 5 x 180 ml.", price: 9000, type: "combo", picks: 5, img: "combo5.jpg" }
-    ];
-
-    const SINGLES = PRODUCTS.filter(p => p.type === "single");
-    const COMBOS = PRODUCTS.filter(p => p.type === "combo");
-
-    const yearEl = document.getElementById("year");
-    const menuList = document.getElementById("menuList");
-    const comboBox = document.getElementById("comboBox");
-    const comboFields = document.getElementById("comboFields");
-    const liveSummary = document.getElementById("liveSummary");
-
-    const entregaEl = document.getElementById("entrega");
-    const entregaHint = document.getElementById("entregaHint");
-    const addressBlock = document.getElementById("addressBlock");
-    const diaEl = document.getElementById("dia");
-    const diaHint = document.getElementById("diaHint");
-
-    const btnSend = document.getElementById("btnSend");
-    const btnCopy = document.getElementById("btnCopy");
-    const btnClear = document.getElementById("btnClear");
-    const warnBox = document.getElementById("warnBox");
-
-    const drawer = document.getElementById("drawer");
-    const drawerBackdrop = document.getElementById("drawerBackdrop");
-    const btnOpenCart = document.getElementById("btnOpenCart");
-    const btnOpenCart2 = document.getElementById("btnOpenCart2");
-    const btnCloseCart = document.getElementById("btnCloseCart");
-    const cartLines = document.getElementById("cartLines");
-    const cartTotal = document.getElementById("cartTotal");
-
-    const floatCount = document.getElementById("floatCount");
-    const floatSummary = document.getElementById("floatSummary");
-    const btnWhatsAppQuick = document.getElementById("btnWhatsAppQuick");
-
-    const toast = document.getElementById("toast");
-    const toastTitle = document.getElementById("toastTitle");
-    const toastMsg = document.getElementById("toastMsg");
-
-    yearEl.textContent = new Date().getFullYear();
-
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-    function money(n){ return `$${Number(n||0).toLocaleString("es-CL")}`; }
-    function showToast(title, msg){
-      toastTitle.textContent = title;
-      toastMsg.textContent = msg;
-      toast.style.display = "block";
-      clearTimeout(window.__t);
-      window.__t = setTimeout(()=> toast.style.display = "none", 2300);
-    }
-    function getQty(id){
-      const el = document.getElementById(id);
-      return parseInt((el?.value || "0"), 10) || 0;
-    }
-    function setQty(id, val){
-      const el = document.getElementById(id);
-      if(el) el.value = String(Math.max(0, val|0));
-    }
-
-    // Render menú con imágenes
-    PRODUCTS.forEach(p => {
-      const row = document.createElement("div");
-      row.className = "item";
-      row.innerHTML = `
-        <div class="thumb" aria-hidden="true">
-          <img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.name)}" loading="lazy">
-        </div>
-        <div>
-          <div class="itemTitle">
-            <strong>${escapeHtml(p.name)}</strong>
-            <span class="priceTag">${money(p.price)}</span>
-          </div>
-          <div class="desc">${escapeHtml(p.desc)}</div>
-        </div>
-        <div class="qty">
-          <input id="${p.id}" type="number" min="0" value="0" inputmode="numeric" aria-label="Cantidad ${escapeHtml(p.name)}" />
-        </div>
-      `;
-      menuList.appendChild(row);
-    });
-
-    // Persistencia
-    function saveState(){
-      const state = {
-        qty: Object.fromEntries(PRODUCTS.map(p => [p.id, getQty(p.id)])),
-        form: {
-          nombre: document.getElementById("nombre").value || "",
-          telefono: document.getElementById("telefono").value || "",
-          comuna: document.getElementById("comuna").value || "La Florida",
-          entrega: document.getElementById("entrega").value || "Delivery (a coordinar)",
-          dia: document.getElementById("dia").value || "",
-          horario: document.getElementById("horario").value || "",
-          direccion: document.getElementById("direccion").value || "",
-          notas: document.getElementById("notas").value || "",
-          pago: document.getElementById("pago").value || "Transferencia"
-        },
-        picks: Array.from(comboFields.querySelectorAll("select")).map(s => s.value || "")
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-    function loadState(){
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return;
-      try{
-        const state = JSON.parse(raw);
-        if(state?.qty){
-          for(const [id,val] of Object.entries(state.qty)) setQty(id, val);
-        }
-        if(state?.form){
-          for(const [k,v] of Object.entries(state.form)){
-            const el = document.getElementById(k);
-            if(el) el.value = v;
-          }
-        }
-      }catch(e){}
-    }
-
-    function buildComboFields(totalPicks, prevValues){
-      comboFields.innerHTML = "";
-      for(let i=0; i<totalPicks; i++){
-        const wrap = document.createElement("div");
-        wrap.innerHTML = `
-          <label>Selección ${i+1}</label>
-          <select id="pick_${i}">
-            <option value="">(Elegir sabor)</option>
-            ${SINGLES.map(s => `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`).join("")}
-          </select>
-        `;
-        comboFields.appendChild(wrap);
-      }
-      const selects = comboFields.querySelectorAll("select");
-      selects.forEach((sel, idx) => { if(prevValues?.[idx]) sel.value = prevValues[idx]; });
-    }
-
-    function updateComboUI(){
-      let totalPicks = 0;
-      COMBOS.forEach(c => totalPicks += getQty(c.id) * c.picks);
-
-      if(totalPicks <= 0){
-        comboBox.style.display = "none";
-        comboFields.innerHTML = "";
-        return;
-      }
-      comboBox.style.display = "block";
-      const prev = Array.from(comboFields.querySelectorAll("select")).map(s => s.value || "");
-      buildComboFields(totalPicks, prev);
-
-      comboFields.querySelectorAll("select").forEach(sel => sel.addEventListener("change", () => {
-        saveState(); renderAll();
-      }));
-    }
-
-    function comboSummary(){
-      if(comboBox.style.display === "none") return "";
-      const picks = Array.from(comboFields.querySelectorAll("select"))
-        .map(s => (s.value || "").trim())
-        .filter(Boolean);
-
-      if(picks.length === 0) return "Sabores combo: (sin seleccionar, a coordinar por WhatsApp)";
-
-      const count = {};
-      picks.forEach(p => count[p] = (count[p]||0)+1);
-      return "Sabores combo: " + Object.entries(count).map(([n,c]) => `${c} x ${n}`).join(" · ");
-    }
-
-    function updateEntregaUI(){
-      const isDelivery = entregaEl.value.toLowerCase().includes("delivery");
-      addressBlock.style.display = isDelivery ? "block" : "none";
-      entregaHint.textContent = isDelivery
-        ? "Si es delivery, agrega dirección para coordinar."
-        : "Si es retiro, coordinamos punto y hora por WhatsApp.";
-    }
-
-    function suggestNextDayIfEmpty(){
-      if((diaEl.value || "").trim().length > 0) return;
-      const now = new Date();
-      const tomorrow = new Date(now.getTime() + 24*60*60*1000);
-      const dd = String(tomorrow.getDate()).padStart(2,"0");
-      const mm = String(tomorrow.getMonth()+1).padStart(2,"0");
-      diaEl.value = `${dd}-${mm}`;
-    }
-
-    function updateDiaHint(){
-      const v = (diaEl.value||"").trim().toLowerCase();
-      diaHint.textContent = v.includes("hoy") ? "Recuerda: cierre 18:00 y entrega al día siguiente ✅" : "";
-    }
-
-    function buildOrder(){
-      const lines = [];
-      let total = 0;
-      let countItems = 0;
-      PRODUCTS.forEach(p => {
-        const q = getQty(p.id);
-        if(q > 0){
-          const sub = q * p.price;
-          total += sub;
-          countItems += q;
-          lines.push({ name:p.name, qty:q, sub });
-        }
-      });
-      return { lines, total, countItems };
-    }
-
-    function renderCartDrawer(order){
-      cartLines.innerHTML = "";
-      if(order.lines.length === 0){
-        cartLines.innerHTML = `<div class="muted">Aún no seleccionas productos.</div>`;
-      }else{
-        order.lines.forEach(l => {
-          const div = document.createElement("div");
-          div.className = "cartLine";
-          div.innerHTML = `<div><b>${escapeHtml(l.name)}</b><div class="muted">x${l.qty}</div></div><div>${money(l.sub)}</div>`;
-          cartLines.appendChild(div);
-        });
-      }
-      cartTotal.textContent = money(order.total);
-    }
-
-    function renderLiveSummary(order){
-      if(order.lines.length === 0){
-        liveSummary.innerHTML = `<div class="muted">Aún no seleccionas productos.</div>`;
-      }else{
-        const top = order.lines.slice(0,4).map(l => `${l.name} x${l.qty}`).join(" · ");
-        const extra = order.lines.length > 4 ? ` · +${order.lines.length-4} más` : "";
-        liveSummary.innerHTML = `
-          <div><b>Total:</b> <span style="color:var(--accent); font-weight:950;">${money(order.total)}</span></div>
-          <div class="mini">${escapeHtml(top + extra)}</div>
-        `;
-      }
-      floatCount.textContent = String(order.countItems);
-      floatSummary.textContent = order.lines.length ? `Total ${money(order.total)} · ${order.lines.length} ítems` : "Sin productos seleccionados.";
-    }
-
-    function renderAll(){
-      updateEntregaUI();
-      updateDiaHint();
-      const order = buildOrder();
-      renderLiveSummary(order);
-      renderCartDrawer(order);
-      saveState();
-    }
-
-    function openDrawer(){
-      drawerBackdrop.style.display = "block";
-      drawer.classList.add("open");
-    }
-    function closeDrawer(){
-      drawerBackdrop.style.display = "none";
-      drawer.classList.remove("open");
-    }
-
-    function buildWhatsAppMessage(){
-      const nombre = (document.getElementById("nombre").value || "").trim() || "(sin nombre)";
-      const telefono = (document.getElementById("telefono").value || "").trim();
-      const comuna = document.getElementById("comuna").value;
-      const entrega = document.getElementById("entrega").value;
-      const dia = (document.getElementById("dia").value || "").trim() || "(sin fecha)";
-      const horario = (document.getElementById("horario").value || "").trim() || "(sin horario)";
-      const direccion = (document.getElementById("direccion").value || "").trim();
-      const notas = (document.getElementById("notas").value || "").trim();
-      const pago = document.getElementById("pago").value;
-
-      const order = buildOrder();
-      if(order.lines.length === 0) return { ok:false, error:"Te falta elegir al menos 1 ítem (cantidad mayor a 0)." };
-
-      const isDelivery = entrega.toLowerCase().includes("delivery");
-      if(isDelivery && !direccion) return { ok:false, error:"Si es delivery, agrega la dirección para coordinar." };
-
-      const comboUsed = (getQty("c3") > 0 || getQty("c5") > 0);
-      const comboText = comboUsed ? `\n🎁 ${comboSummary()}\n` : "";
-
-      const linesText = order.lines.map(l => `- ${l.name} x${l.qty} = ${money(l.sub)}`).join("\n");
-
-      const msg =
-`Hola DonJu Gourmet 👋
-Soy: ${nombre}${telefono ? ` (Tel: ${telefono})` : ""}
-
-🧁 Pedido (180 ml):
-${linesText}
-Total: ${money(order.total)}
-${comboText}
-📍 Comuna: ${comuna}
-🚚 Entrega: ${entrega} (a coordinar)
-📅 Día: ${dia}
-🕒 Hora: ${horario}
-${isDelivery ? `🏠 Dirección: ${direccion}\n` : ""}💳 Pago: ${pago}
-${notas ? `📝 Notas: ${notas}\n` : ""}
-
-(Entiendo que los pedidos cierran 18:00 y se entrega al día siguiente ✅)`;
-
-      return { ok:true, msg };
-    }
-
-    async function copyText(text){
-      try{
-        await navigator.clipboard.writeText(text);
-        return true;
-      }catch(e){
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        const ok = document.execCommand("copy");
-        ta.remove();
-        return ok;
-      }
-    }
-
-    // Listeners
-    PRODUCTS.forEach(p => {
-      document.getElementById(p.id).addEventListener("input", () => {
-        updateComboUI();
-        renderAll();
-      });
-    });
-
-    ["nombre","telefono","comuna","entrega","dia","horario","direccion","notas","pago"].forEach(id => {
-      const el = document.getElementById(id);
-      el.addEventListener("input", saveState);
-      el.addEventListener("change", saveState);
-    });
-
-    entregaEl.addEventListener("change", () => { updateEntregaUI(); saveState(); });
-    diaEl.addEventListener("input", () => { updateDiaHint(); saveState(); });
-
-    btnOpenCart.addEventListener("click", openDrawer);
-    btnOpenCart2.addEventListener("click", openDrawer);
-    btnCloseCart.addEventListener("click", closeDrawer);
-    drawerBackdrop.addEventListener("click", closeDrawer);
-
-    btnWhatsAppQuick.addEventListener("click", () => {
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hola DonJu Gourmet 👋 Quiero hacer un pedido.")}`;
-      window.open(url, "_blank");
-    });
-
-    btnCopy.addEventListener("click", async () => {
-      const built = buildWhatsAppMessage();
-      if(!built.ok){
-        warnBox.style.display = "block";
-        warnBox.textContent = built.error;
-        return;
-      }
-      warnBox.style.display = "none";
-      const ok = await copyText(built.msg);
-      showToast(ok ? "Copiado ✅" : "No se pudo copiar", ok ? "Pedido copiado. Pégalo en WhatsApp." : "Intenta de nuevo.");
-    });
-
-    btnClear.addEventListener("click", () => {
-      PRODUCTS.forEach(p => setQty(p.id, 0));
-      comboFields.innerHTML = "";
-      comboBox.style.display = "none";
-      ["nombre","telefono","dia","horario","direccion","notas"].forEach(id => document.getElementById(id).value = "");
-      document.getElementById("comuna").value = "La Florida";
-      document.getElementById("entrega").value = "Delivery (a coordinar)";
-      document.getElementById("pago").value = "Transferencia";
-      warnBox.style.display = "none";
-      localStorage.removeItem(STORAGE_KEY);
-      suggestNextDayIfEmpty();
-      updateComboUI();
-      renderAll();
-      showToast("Listo", "Formulario limpio. Arma un pedido nuevo.");
-    });
-
-    btnSend.addEventListener("click", async () => {
-      const built = buildWhatsAppMessage();
-      if(!built.ok){
-        warnBox.style.display = "block";
-        warnBox.textContent = built.error;
-        return;
-      }
-      warnBox.style.display = "none";
-      showToast("¡Listo! ✅", "Abriendo WhatsApp para enviar tu pedido…");
-
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(built.msg)}`;
-
-      setTimeout(async () => {
-        const w = window.open(url, "_blank");
-        if(!w){
-          await copyText(built.msg);
-          showToast("Bloqueado por el navegador", "Copié el pedido. Pégalo en WhatsApp.");
-        }
-      }, 350);
-    });
-
-    // Init
-    loadState();
-    suggestNextDayIfEmpty();
-    updateEntregaUI();
-    updateDiaHint();
-    updateComboUI();
-    renderAll();
-
-    // Register Service Worker (PWA) — si ya creaste sw.js
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("sw.js").catch(() => {});
-      });
-    }
-  </script>
-</body>
-</html>
+      <button class="btn primary" id="btnO
