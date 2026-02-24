@@ -256,7 +256,8 @@
         </div>
       </div>
       <div class="actions">
-        <a class="btn ghost" href="https://www.instagram.com/donju_gourmet" target="_blank" rel="noreferrer">Instagram</a>
+        <!-- Botón IG con deep-link + fallback (se maneja por JS) -->
+        <a class="btn ghost" id="igBtn" href="https://www.instagram.com/donju_gourmet/" target="_blank" rel="noreferrer">Instagram</a>
         <a class="btn primary" href="#pedido">Pedir</a>
       </div>
     </div>
@@ -375,8 +376,7 @@
 
     <footer style="padding:26px 0; color:var(--muted); font-size:12px">
       © <span id="year"></span> DonJu Gourmet · Instagram:
-      <a href="https://www.instagram.com/donju_gourmet" target="_blank" rel="noreferrer">@donju_gourmet</a>
-      · WhatsApp: +56 9 5605 9401
+      <span>@donju_gourmet</span> · WhatsApp: +56 9 5605 9401
     </footer>
   </div>
 
@@ -392,6 +392,26 @@
     }
     function money(n){ return `$${Number(n||0).toLocaleString("es-CL")}`; }
 
+    // ====== YEAR ======
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ====== Instagram (app + fallback web) ======
+    (function fixInstagramLink(){
+      const igBtn = document.getElementById("igBtn");
+      if(!igBtn) return;
+
+      const webUrl = "https://www.instagram.com/donju_gourmet/";
+      const appUrl = "instagram://user?username=donju_gourmet";
+
+      igBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        // intenta abrir app
+        window.location.href = appUrl;
+        // fallback a web
+        setTimeout(() => window.open(webUrl, "_blank"), 800);
+      });
+    })();
+
     // ====== DATA ======
     const WHATSAPP_NUMBER = "56956059401";
     const PRODUCTS = [
@@ -405,9 +425,6 @@
     ];
     const SINGLES = PRODUCTS.filter(p => p.type === "single");
     const COMBOS = PRODUCTS.filter(p => p.type === "combo");
-
-    // ====== YEAR ======
-    document.getElementById("year").textContent = new Date().getFullYear();
 
     // ====== RENDER MENU ======
     const menuList = document.getElementById("menuList");
@@ -564,7 +581,7 @@ ${notas ? `📝 Notas: ${notas}\n` : ""}
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
     });
 
-    // ====== CARRUSEL (FUNCIONA SÍ O SÍ) ======
+    // ====== CARRUSEL ======
     const HERO_SLIDES = [
       { src: "tiramisu.jpg", label: "Tiramisú" },
       { src: "cheesecake-maracuya.jpg", label: "Cheesecake de maracuyá" },
