@@ -44,20 +44,39 @@
       color:var(--text);
     }
     a{color:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding:22px}
 
+    /* ✅ Dejamos espacio arriba para la barra fija */
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:120px 22px 22px;
+    }
+
+    /* ✅ TOPBAR ahora SIEMPRE fija */
     .topbar{
-      position:sticky; top:12px; z-index:50;
+      position:fixed;
+      top:12px;
+      left:50%;
+      transform:translateX(-50%);
+      width:min(var(--max), calc(100% - 44px));
+      z-index:999;
+
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 14px;
-      background: rgba(255,255,255,.70);
+      background: rgba(255,255,255,.78);
       border:1px solid var(--stroke);
       border-radius:var(--r2);
       backdrop-filter: blur(12px);
       box-shadow: var(--shadow);
       gap:12px;
     }
-    .brand{display:flex; align-items:center; gap:12px; min-width:0}
+
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      min-width:0; /* ✅ clave para que el texto haga ellipsis */
+      flex:1;
+    }
+
     .logo{
       width:76px; height:76px; border-radius:20px; overflow:hidden; flex:0 0 auto;
       background:rgba(255,255,255,.55);
@@ -65,10 +84,24 @@
       box-shadow: 0 14px 30px rgba(30,15,10,.14), 0 0 0 6px var(--gold2);
     }
     .logo img{width:100%; height:100%; object-fit:cover}
-    .brandText h1{margin:0; font-size:18px; letter-spacing:.3px}
-    .brandText small{display:block; color:var(--muted); margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 
-    .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .brandText{
+      min-width:0;  /* ✅ clave para que el texto no se salga */
+      flex:1;
+    }
+    .brandText h1{margin:0; font-size:18px; letter-spacing:.3px}
+    .brandText small{
+      display:block;
+      color:var(--muted);
+      margin-top:3px;
+      line-height:1.2;
+
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis; /* ✅ ahora sí funciona */
+    }
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; flex:0 0 auto}
 
     .btn{
       border:1px solid var(--stroke2);
@@ -109,7 +142,6 @@
     }
 
     .hero{
-      margin-top:16px;
       padding:18px;
       border-radius:var(--r2);
       border:1px solid var(--stroke);
@@ -246,22 +278,22 @@
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"><img src="logo.jpg" alt="DonJu Gourmet"></div>
-        <div class="brandText">
-          <h1>DonJu Gourmet</h1>
-          <small>Un gusto que enamora · Cierre 18:00 · Entrega al día siguiente · 180 ml</small>
-        </div>
-      </div>
-      <div class="actions">
-        <!-- Botón IG con deep-link + fallback (se maneja por JS) -->
-        <a class="btn ghost" id="igBtn" href="https://www.instagram.com/donju_gourmet/" target="_blank" rel="noreferrer">Instagram</a>
-        <a class="btn primary" href="#pedido">Pedir</a>
+  <!-- ✅ Barra fija -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"><img src="logo.jpg" alt="DonJu Gourmet"></div>
+      <div class="brandText">
+        <h1>DonJu Gourmet</h1>
+        <small>Un gusto que enamora · Cierre 18:00 · Entrega al día siguiente · 180 ml</small>
       </div>
     </div>
+    <div class="actions">
+      <a class="btn ghost" id="igBtn" href="https://www.instagram.com/donju_gourmet/" target="_blank" rel="noreferrer">Instagram</a>
+      <a class="btn primary" href="#pedido">Pedir</a>
+    </div>
+  </div>
 
+  <div class="wrap">
     <section class="hero">
       <h2>Postres artesanales listos para regalar (o darse un gusto)</h2>
       <p>
@@ -275,7 +307,6 @@
         <span class="pill">🎁 Combos: 3 y 5</span>
       </div>
 
-      <!-- Carrusel -->
       <div class="heroCarousel" aria-label="Galería de productos">
         <button class="hcBtn" id="hcPrevBtn" type="button">‹</button>
         <div class="hcFrame">
@@ -375,13 +406,11 @@
     </div>
 
     <footer style="padding:26px 0; color:var(--muted); font-size:12px">
-      © <span id="year"></span> DonJu Gourmet · Instagram:
-      <span>@donju_gourmet</span> · WhatsApp: +56 9 5605 9401
+      © <span id="year"></span> DonJu Gourmet · Instagram: <span>@donju_gourmet</span> · WhatsApp: +56 9 5605 9401
     </footer>
   </div>
 
   <script>
-    // ====== UTIL ======
     function escapeHtml(str){
       return String(str)
         .replaceAll("&","&amp;")
@@ -391,28 +420,21 @@
         .replaceAll("'","&#039;");
     }
     function money(n){ return `$${Number(n||0).toLocaleString("es-CL")}`; }
-
-    // ====== YEAR ======
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // ====== Instagram (app + fallback web) ======
+    // Instagram (app + fallback web)
     (function fixInstagramLink(){
       const igBtn = document.getElementById("igBtn");
       if(!igBtn) return;
-
       const webUrl = "https://www.instagram.com/donju_gourmet/";
       const appUrl = "instagram://user?username=donju_gourmet";
-
       igBtn.addEventListener("click", (e) => {
         e.preventDefault();
-        // intenta abrir app
         window.location.href = appUrl;
-        // fallback a web
         setTimeout(() => window.open(webUrl, "_blank"), 800);
       });
     })();
 
-    // ====== DATA ======
     const WHATSAPP_NUMBER = "56956059401";
     const PRODUCTS = [
       { id:"p1", name:"Tiramisú", desc:"Cremoso, con café y cacao.", price:2000, type:"single", img:"tiramisu.jpg" },
@@ -426,7 +448,6 @@
     const SINGLES = PRODUCTS.filter(p => p.type === "single");
     const COMBOS = PRODUCTS.filter(p => p.type === "combo");
 
-    // ====== RENDER MENU ======
     const menuList = document.getElementById("menuList");
     PRODUCTS.forEach(p=>{
       const row = document.createElement("div");
@@ -447,7 +468,6 @@
       menuList.appendChild(row);
     });
 
-    // ====== COMBOS (selectors) ======
     const comboBox = document.getElementById("comboBox");
     const comboFields = document.getElementById("comboFields");
 
@@ -493,7 +513,6 @@
       return "Sabores combo: " + Object.entries(c).map(([n,k])=>`${k} x ${n}`).join(" · ");
     }
 
-    // ====== ENTREGA UI ======
     const entregaEl = document.getElementById("entrega");
     const addressBlock = document.getElementById("addressBlock");
     const entregaHint = document.getElementById("entregaHint");
@@ -505,7 +524,6 @@
     entregaEl.addEventListener("change", updateEntrega);
     updateEntrega();
 
-    // ====== WHATSAPP ======
     function buildOrderLines(){
       const lines = [];
       let total = 0;
@@ -581,7 +599,7 @@ ${notas ? `📝 Notas: ${notas}\n` : ""}
       window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
     });
 
-    // ====== CARRUSEL ======
+    // Carrusel
     const HERO_SLIDES = [
       { src: "tiramisu.jpg", label: "Tiramisú" },
       { src: "cheesecake-maracuya.jpg", label: "Cheesecake de maracuyá" },
@@ -591,7 +609,6 @@ ${notas ? `📝 Notas: ${notas}\n` : ""}
       { src: "combo3.jpg", label: "Combo 3" },
       { src: "combo5.jpg", label: "Combo 5" }
     ];
-
     let hcIndex = 0;
     let hcTimer = null;
 
@@ -603,16 +620,13 @@ ${notas ? `📝 Notas: ${notas}\n` : ""}
       img.alt = HERO_SLIDES[hcIndex].label;
       cap.textContent = HERO_SLIDES[hcIndex].label;
     }
-
     function hcPrev(){
       hcIndex = (hcIndex - 1 + HERO_SLIDES.length) % HERO_SLIDES.length;
-      hcRender();
-      hcStart();
+      hcRender(); hcStart();
     }
     function hcNext(){
       hcIndex = (hcIndex + 1) % HERO_SLIDES.length;
-      hcRender();
-      hcStart();
+      hcRender(); hcStart();
     }
     function hcStart(){
       if(hcTimer) clearInterval(hcTimer);
@@ -621,9 +635,7 @@ ${notas ? `📝 Notas: ${notas}\n` : ""}
 
     document.getElementById("hcPrevBtn").addEventListener("click", hcPrev);
     document.getElementById("hcNextBtn").addEventListener("click", hcNext);
-
-    hcRender();
-    hcStart();
+    hcRender(); hcStart();
   </script>
 </body>
 </html>
