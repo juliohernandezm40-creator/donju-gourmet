@@ -32,10 +32,8 @@
       --gold1: rgba(215,180,106,.55);
       --gold2: rgba(215,180,106,.18);
       --focus: rgba(122,77,42,.35);
-      --error: #d94b4b;
     }
 
-    /* Accesibilidad: reduced motion */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -48,7 +46,6 @@
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
 
-    /* Focus visible para teclado */
     :focus-visible{
       outline: 2px solid var(--focus);
       outline-offset: 2px;
@@ -67,19 +64,16 @@
       line-height:1.5;
     }
 
-    /* Links normales con underline, pero NO botones */
     a{color:inherit}
     a:hover{ text-decoration: underline; }
     a.btn:hover{ text-decoration: none; }
 
-    /* Espacio para topbar fixed */
     .wrap{
       max-width:var(--max);
       margin:0 auto;
       padding:120px 22px 22px;
     }
 
-    /* TOPBAR fixed */
     .topbar{
       position:fixed;
       top:12px;
@@ -87,7 +81,6 @@
       transform:translateX(-50%);
       width:min(var(--max), calc(100% - 44px));
       z-index:999;
-
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 14px;
       background: rgba(255,255,255,.85);
@@ -112,10 +105,7 @@
     }
     .logo img{width:100%; height:100%; object-fit:cover; display:block;}
 
-    .brandText{
-      min-width:0;
-      flex:1;
-    }
+    .brandText{min-width:0; flex:1;}
     .brandText h1{margin:0; font-size:18px; letter-spacing:.3px; font-weight:700;}
     .brandText small{
       display:block;
@@ -144,7 +134,7 @@
       user-select:none;
       box-shadow: 0 10px 24px rgba(30,15,10,.08);
       font-size:14px;
-      min-height:44px; /* touch target */
+      min-height:44px;
     }
     .btn:hover{ background: rgba(255,255,255,.95); }
     .btn:active{transform:scale(.98)}
@@ -188,7 +178,6 @@
     .hero p{margin:0; color:var(--muted); line-height:1.5}
     .heroRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
 
-    /* Carrusel */
     .heroCarousel{
       display:grid;
       grid-template-columns: 44px 1fr 44px;
@@ -341,6 +330,33 @@
       margin-top:8px;
     }
 
+    /* ✅ B1: Resumen en vivo */
+    .orderSummary{
+      margin-top:16px;
+      padding:14px;
+      background: rgba(215,180,106,.10);
+      border-radius: 16px;
+      border: 1px solid var(--gold1);
+      font-size: 14px;
+      display:none;
+    }
+    .orderSummary h4{
+      margin: 0 0 8px 0;
+      font-size: 15px;
+      color: var(--accent);
+    }
+    .orderSummary ul{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+    .orderSummary .total{
+      font-weight: 900;
+      color: var(--text);
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
     footer{
       padding:26px 0 40px;
       color:var(--muted);
@@ -353,7 +369,6 @@
 </head>
 
 <body>
-  <!-- Barra fija -->
   <header class="topbar">
     <div class="brand">
       <div class="logo" aria-hidden="true">
@@ -384,7 +399,6 @@
         <span class="pill">🎁 Combos: 3 y 5</span>
       </div>
 
-      <!-- Carrusel -->
       <div class="heroCarousel" aria-label="Galería de productos">
         <button class="hcBtn" id="hcPrevBtn" type="button" aria-label="Anterior">‹</button>
         <div class="hcFrame">
@@ -407,6 +421,13 @@
           <h3>Sabores del combo</h3>
           <p class="muted" style="margin-top:-6px;">Puedes repetir sabores. Si lo dejas en blanco, lo coordinamos por WhatsApp.</p>
           <div id="comboFields"></div>
+        </div>
+
+        <!-- ✅ Resumen en vivo -->
+        <div class="orderSummary" id="orderSummary">
+          <h4>📋 Tu pedido</h4>
+          <ul id="summaryItems"></ul>
+          <div class="total">Total: <span id="summaryTotal">$0</span></div>
         </div>
       </section>
 
@@ -488,7 +509,6 @@
   </main>
 
   <script>
-    // Util
     function escapeHtml(str){
       return String(str)
         .replaceAll("&","&amp;")
@@ -514,8 +534,8 @@
       });
     })();
 
-    // Data
     const WHATSAPP_NUMBER = "56956059401";
+
     const PRODUCTS = [
       { id:"p1", name:"Tiramisú", desc:"Cremoso, con café y cacao.", price:2000, type:"single", img:"tiramisu.jpg" },
       { id:"p2", name:"Cheesecake de maracuyá", desc:"Dulce y ácido balanceado.", price:2000, type:"single", img:"cheesecake-maracuya.jpg" },
@@ -568,7 +588,10 @@
       }
 
       comboBox.style.display = "block";
+      // guardar selección previa si existe
+      const prev = Array.from(comboFields.querySelectorAll("select")).map(s => s.value || "");
       comboFields.innerHTML = "";
+
       for(let i=0;i<totalPicks;i++){
         const wrap = document.createElement("div");
         wrap.innerHTML = `
@@ -580,19 +603,13 @@
         `;
         comboFields.appendChild(wrap);
       }
-    }
 
-    PRODUCTS.forEach(p=>{
-      document.getElementById(p.id).addEventListener("input", updateComboUI);
-    });
+      // restaurar valores anteriores
+      const sels = comboFields.querySelectorAll("select");
+      sels.forEach((s, i) => { if(prev[i]) s.value = prev[i]; });
 
-    function comboSummary(){
-      if(comboBox.style.display === "none") return "";
-      const picks = Array.from(comboFields.querySelectorAll("select")).map(s=>s.value).filter(Boolean);
-      if(!picks.length) return "Sabores combo: (sin seleccionar, a coordinar)";
-      const c = {};
-      picks.forEach(x=>c[x]=(c[x]||0)+1);
-      return "Sabores combo: " + Object.entries(c).map(([n,k])=>`${k} x ${n}`).join(" · ");
+      // al cambiar sabor, actualiza resumen
+      sels.forEach(s => s.addEventListener("change", updateSummary));
     }
 
     // Entrega UI
@@ -604,11 +621,15 @@
       addressBlock.style.display = isDelivery ? "block" : "none";
       entregaHint.textContent = isDelivery ? "Agrega dirección para coordinar." : "Coordinamos retiro por WhatsApp.";
     }
-    entregaEl.addEventListener("change", updateEntrega);
+    entregaEl.addEventListener("change", () => { updateEntrega(); updateSummary(); });
     updateEntrega();
 
-    // WhatsApp
-    function buildOrderLines(){
+    // B1: Resumen en vivo
+    const orderSummary = document.getElementById("orderSummary");
+    const summaryItems = document.getElementById("summaryItems");
+    const summaryTotal = document.getElementById("summaryTotal");
+
+    function buildOrder(){
       const lines = [];
       let total = 0;
       PRODUCTS.forEach(p=>{
@@ -616,10 +637,59 @@
         if(q>0){
           const sub = q * p.price;
           total += sub;
-          lines.push(`- ${p.name} x${q} = ${money(sub)}`);
+          lines.push({ name: p.name, qty: q, sub });
         }
       });
       return { lines, total };
+    }
+
+    function updateSummary(){
+      const { lines, total } = buildOrder();
+
+      if(!lines.length){
+        orderSummary.style.display = "none";
+        summaryItems.innerHTML = "";
+        summaryTotal.textContent = "$0";
+        return;
+      }
+
+      orderSummary.style.display = "block";
+      summaryItems.innerHTML = lines.map(l => `<li>${escapeHtml(l.name)} x${l.qty}</li>`).join("");
+      summaryTotal.textContent = money(total);
+
+      // si hay combo, mostrar mini resumen de sabores
+      const comboUsed = (getQty("c3")>0 || getQty("c5")>0);
+      if(comboUsed){
+        const picks = Array.from(comboFields.querySelectorAll("select")).map(s=>s.value).filter(Boolean);
+        if(picks.length){
+          const count = {};
+          picks.forEach(x=>count[x]=(count[x]||0)+1);
+          const txt = Object.entries(count).map(([n,k])=>`${k}x ${n}`).join(" · ");
+          summaryItems.insertAdjacentHTML("beforeend", `<li><em>Sabores combo:</em> ${escapeHtml(txt)}</li>`);
+        }else{
+          summaryItems.insertAdjacentHTML("beforeend", `<li><em>Sabores combo:</em> a coordinar</li>`);
+        }
+      }
+    }
+
+    // listeners: cantidades
+    PRODUCTS.forEach(p=>{
+      document.getElementById(p.id).addEventListener("input", () => {
+        updateComboUI();
+        updateSummary();
+      });
+    });
+
+    // WhatsApp
+    const warnBox = document.getElementById("warnBox");
+
+    function comboSummary(){
+      if(comboBox.style.display === "none") return "";
+      const picks = Array.from(comboFields.querySelectorAll("select")).map(s=>s.value).filter(Boolean);
+      if(!picks.length) return "Sabores combo: (sin seleccionar, a coordinar)";
+      const c = {};
+      picks.forEach(x=>c[x]=(c[x]||0)+1);
+      return "Sabores combo: " + Object.entries(c).map(([n,k])=>`${k} x ${n}`).join(" · ");
     }
 
     document.getElementById("btnClear").addEventListener("click", ()=>{
@@ -627,16 +697,16 @@
       comboFields.innerHTML = "";
       comboBox.style.display = "none";
       ["nombre","telefono","dia","horario","direccion","notas"].forEach(id=>document.getElementById(id).value="");
-      document.getElementById("warnBox").style.display="none";
+      warnBox.style.display="none";
       updateEntrega();
+      updateSummary();
     });
 
     document.getElementById("btnSend").addEventListener("click", ()=>{
-      const warnBox = document.getElementById("warnBox");
       warnBox.style.display="none";
       warnBox.textContent="";
 
-      const { lines, total } = buildOrderLines();
+      const { lines, total } = buildOrder();
       if(!lines.length){
         warnBox.style.display="block";
         warnBox.textContent="Te falta elegir al menos 1 ítem.";
@@ -660,6 +730,8 @@
         return;
       }
 
+      const linesText = lines.map(l => `- ${l.name} x${l.qty} = ${money(l.sub)}`).join("\n");
+
       const comboUsed = (getQty("c3")>0 || getQty("c5")>0);
       const comboText = comboUsed ? `\n🎁 ${comboSummary()}\n` : "";
 
@@ -668,7 +740,7 @@
 Soy: ${nombre}${telefono ? ` (Tel: ${telefono})` : ""}
 
 🧁 Pedido (180 ml):
-${lines.join("\n")}
+${linesText}
 Total: ${money(total)}
 ${comboText}
 📍 Comuna: ${comuna}
@@ -719,7 +791,12 @@ ${notas ? `📝 Notas: ${notas}\n` : ""}
 
     document.getElementById("hcPrevBtn").addEventListener("click", hcPrev);
     document.getElementById("hcNextBtn").addEventListener("click", hcNext);
+
     hcRender(); hcStart();
+
+    // init resumen
+    updateComboUI();
+    updateSummary();
   </script>
 </body>
 </html>
