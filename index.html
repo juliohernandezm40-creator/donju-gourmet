@@ -53,13 +53,15 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+
     body {
       font-family: var(--font-sans);
       color: var(--text-main);
       background-color: var(--brand-pastel);
       line-height: 1.5;
-      padding-top: 70px;
+      padding-top: 84px; /* ✅ ajustado por header más alto (logo grande) */
     }
+
     h1, h2, h3, h4 { font-family: var(--font-serif); color: var(--brand-dark); }
     a { text-decoration: none; color: inherit; }
     button { cursor: pointer; border: none; font-family: inherit; }
@@ -76,6 +78,7 @@
     }
 
     .container { max-width: var(--content-max); margin: 0 auto; padding: 0 20px; }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -108,6 +111,17 @@
     .btn-wa:hover { background: var(--whatsapp-hover); transform: translateY(-2px); }
     .btn:active { transform: translateY(0); opacity: .98; }
 
+    /* ✅ Botón música */
+    .btn-music {
+      border: 1px solid var(--brand-gold);
+      background: rgba(194,165,122,.12);
+      color: var(--brand-dark);
+    }
+    .btn-music:hover {
+      background: rgba(194,165,122,.20);
+      transform: translateY(-2px);
+    }
+
     .text-center { text-align: center; }
 
     /* HEADER */
@@ -118,7 +132,7 @@
       backdrop-filter: blur(8px);
       z-index: 1000;
       box-shadow: var(--shadow-sm);
-      height: 70px;
+      height: 84px; /* ✅ más alto para logo grande */
     }
     .header .container {
       display: flex;
@@ -132,7 +146,7 @@
       align-items: center;
       gap: 12px;
       font-family: var(--font-serif);
-      font-size: 1.25rem;
+      font-size: 1.35rem; /* ✅ un poco más grande */
       font-weight: 700;
       color: var(--brand-dark);
       min-width: 0;
@@ -142,8 +156,34 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .logo-img { height: 40px; width: 40px; border-radius: 50%; object-fit: cover; }
+    /* ✅ Logo más grande */
+    .logo-img { height: 56px; width: 56px; border-radius: 50%; object-fit: cover; }
+
     .header-links { display: flex; gap: 10px; align-items: center; }
+
+    /* Banner música (cuando autoplay está bloqueado) */
+    .music-banner{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 92px;
+      width: min(var(--content-max), calc(100% - 40px));
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(194,165,122,.35);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 12px 14px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      z-index: 1100;
+    }
+    .music-banner p{
+      margin:0;
+      color: var(--text-muted);
+      font-size: .95rem;
+    }
 
     /* HERO */
     .hero {
@@ -375,6 +415,7 @@
     .floating-cta.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
     @media (max-width: 768px) {
+      body { padding-top: 84px; }
       .hero-title { font-size: 2.05rem; }
       .carousel { height: 250px; }
       .checkout-section { padding: 20px; }
@@ -385,17 +426,33 @@
 </head>
 
 <body>
+  <!-- 🎵 AUDIO (sube tu archivo como musica.mp3 en la raíz del repo) -->
+  <audio id="bgMusic" src="musica.mp3" preload="auto" loop></audio>
+
+  <!-- Banner si el autoplay está bloqueado -->
+  <div class="music-banner" id="musicBanner">
+    <p>🎵 Música disponible. Toca para activarla.</p>
+    <button class="btn btn-music" id="musicBannerBtn" type="button">Activar música</button>
+  </div>
+
   <!-- HEADER -->
   <header class="header">
     <div class="container">
-      <a href="#" class="logo-container" aria-label="Inicio DonJu Gourmet">
-        <img src="logo.jpg" alt="DonJu Gourmet Logo" class="logo-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><circle cx=\\'50\\' cy=\\'50\\' r=\\'50\\' fill=\\'%23C2A57A\\'/></svg>'">
+      <a href="#top" class="logo-container" aria-label="Inicio DonJu Gourmet">
+        <img src="logo.jpg" alt="DonJu Gourmet Logo" class="logo-img"
+             onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><circle cx=\\'50\\' cy=\\'50\\' r=\\'50\\' fill=\\'%23C2A57A\\'/></svg>'">
         <span>DonJu Gourmet</span>
       </a>
 
       <div class="header-links">
+        <!-- Botón música ON/OFF -->
+        <button type="button" class="btn btn-music" id="musicToggleBtn" aria-label="Música">
+          <span id="musicToggleText">Música</span>
+        </button>
+
         <a href="https://www.instagram.com/donju_gourmet" target="_blank" class="btn btn-outline" id="igBtn" aria-label="Instagram">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
@@ -415,9 +472,6 @@
 
   <!-- FLOATING CTA -->
   <a href="#checkout" class="btn btn-wa floating-cta" id="floatingCta" aria-label="Ir al pedido">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-    </svg>
     Ir al pedido
   </a>
 
@@ -435,7 +489,6 @@
       <a href="#checkout" class="btn btn-wa">Ir al pedido</a>
     </div>
 
-    <!-- CAROUSEL -->
     <div class="carousel-wrap" id="carouselWrap">
       <div class="carousel" id="carousel">
         <img src="tiramisu.jpg" alt="Tiramisú" loading="eager" onerror="this.src=fallbackImg('Imagen Tiramisú')">
@@ -451,7 +504,6 @@
     </div>
   </section>
 
-  <!-- MENU -->
   <section id="menu" class="container">
     <h2 class="section-title">Nuestra Carta</h2>
     <div class="menu-grid" id="productsGrid"></div>
@@ -465,7 +517,6 @@
     </p>
   </section>
 
-  <!-- CHECKOUT -->
   <section id="checkout" class="container">
     <div class="checkout-section">
       <h2 class="section-title" style="margin-top:0;">Tu Pedido</h2>
@@ -535,16 +586,12 @@
         </div>
 
         <button type="submit" class="btn btn-wa" style="width: 100%; margin-top: 8px; font-size: 1.05rem;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-          </svg>
           Enviar pedido por WhatsApp
         </button>
       </form>
     </div>
   </section>
 
-  <!-- FAQ -->
   <section class="container faq-section">
     <h2 class="section-title">Preguntas Frecuentes</h2>
 
@@ -594,6 +641,7 @@
 
     const WHATSAPP_NUMBER = "56956059401";
     const STORAGE_KEY = "donju_premium_cart_v1";
+    const MUSIC_KEY = "donju_music_enabled_v1";
 
     // ---------- DATA ----------
     const INDIVIDUALS = [
@@ -610,7 +658,7 @@
     const FLAVOR_OPTIONS = INDIVIDUALS.map(p => p.name);
 
     // STATE
-    let cart = {}; // { productId: { qty, flavors: [] } }
+    let cart = {};
     let currentSlide = 0;
     let carouselInterval = null;
 
@@ -638,7 +686,7 @@
       // Restore state
       loadState();
 
-      // Set checkout handlers
+      // Form handlers
       document.getElementById("f_type").addEventListener("change", () => {
         toggleDeliveryFields();
         saveState();
@@ -653,20 +701,97 @@
         sendOrder();
       });
 
-      // time notice
       checkTime();
-
-      // Carousel init
       initCarousel();
 
-      // Floating CTA
       window.addEventListener("scroll", handleFloatingCta);
       handleFloatingCta();
 
-      // Initial UI
       toggleDeliveryFields();
       renderCartSummary();
+
+      // 🎵 Música
+      initMusic();
     });
+
+    // ---------- MUSIC ----------
+    function initMusic(){
+      const audio = document.getElementById("bgMusic");
+      const toggleBtn = document.getElementById("musicToggleBtn");
+      const toggleText = document.getElementById("musicToggleText");
+      const banner = document.getElementById("musicBanner");
+      const bannerBtn = document.getElementById("musicBannerBtn");
+
+      // Volumen suave por defecto (ajústalo si quieres)
+      audio.volume = 0.35;
+
+      let enabled = localStorage.getItem(MUSIC_KEY);
+      if(enabled === null) enabled = "1"; // por defecto: ON
+      enabled = enabled === "1";
+
+      function setUI(){
+        toggleText.textContent = enabled ? "Música: ON" : "Música: OFF";
+      }
+
+      async function tryPlay(){
+        try{
+          await audio.play();
+          banner.style.display = "none";
+          enabled = true;
+          localStorage.setItem(MUSIC_KEY, "1");
+          setUI();
+        }catch(e){
+          // Autoplay bloqueado
+          banner.style.display = "flex";
+          enabled = false;
+          localStorage.setItem(MUSIC_KEY, "0");
+          setUI();
+        }
+      }
+
+      function stop(){
+        audio.pause();
+        audio.currentTime = 0;
+      }
+
+      // Intentar autoplay si está habilitado
+      setUI();
+      if(enabled){
+        tryPlay();
+      }else{
+        stop();
+        banner.style.display = "none";
+      }
+
+      // Toggle
+      toggleBtn.addEventListener("click", async () => {
+        if(enabled){
+          enabled = false;
+          localStorage.setItem(MUSIC_KEY, "0");
+          stop();
+          banner.style.display = "none";
+          setUI();
+        }else{
+          await tryPlay();
+        }
+      });
+
+      // Banner button
+      bannerBtn.addEventListener("click", async () => {
+        await tryPlay();
+      });
+
+      // Si el usuario vuelve a la pestaña, reintentar si está ON
+      document.addEventListener("visibilitychange", () => {
+        if(document.visibilityState === "visible"){
+          const on = localStorage.getItem(MUSIC_KEY) === "1";
+          if(on && audio.paused){
+            // intentar play (puede o no)
+            audio.play().catch(()=>{});
+          }
+        }
+      });
+    }
 
     // ---------- INSTAGRAM ----------
     function fixInstagramDeepLink(){
@@ -677,7 +802,6 @@
       const appUrl = "instagram://user?username=donju_gourmet";
 
       igBtn.addEventListener("click", (e) => {
-        // Intentar abrir app primero
         e.preventDefault();
         window.location.href = appUrl;
         setTimeout(() => window.open(webUrl, "_blank"), 800);
@@ -690,10 +814,8 @@
       const wrap = document.getElementById("carouselWrap");
       const dotsContainer = document.getElementById("carouselDots");
 
-      // Recalcular slides correctamente (fix principal)
       const slides = Array.from(carousel.querySelectorAll("img"));
 
-      // Dots
       dotsContainer.innerHTML = "";
       slides.forEach((_, i) => {
         const dot = document.createElement("div");
@@ -702,18 +824,14 @@
         dotsContainer.appendChild(dot);
       });
 
-      // autoplay
       startCarousel(slides.length);
 
-      // pause on hover / touch
       wrap.addEventListener("mouseenter", stopCarousel);
       wrap.addEventListener("mouseleave", () => startCarousel(slides.length));
       wrap.addEventListener("touchstart", stopCarousel, {passive:true});
       wrap.addEventListener("touchend", () => startCarousel(slides.length), {passive:true});
 
-      // store slides length on element dataset
       wrap.dataset.slides = String(slides.length);
-
       updateCarousel();
     }
 
@@ -734,7 +852,6 @@
     function goToSlide(i){
       currentSlide = i;
       updateCarousel();
-      // reset timer
       stopCarousel();
       startCarousel(slidesCount());
     }
@@ -770,7 +887,6 @@
       pGrid.innerHTML = INDIVIDUALS.map(p => createCardStr(p, false)).join("");
       cGrid.innerHTML = COMBOS.map(c => createCardStr(c, true)).join("");
 
-      // Bind buttons after render
       [...INDIVIDUALS, ...COMBOS].forEach(p => {
         const minus = document.querySelector(`[data-minus="${p.id}"]`);
         const plus  = document.querySelector(`[data-plus="${p.id}"]`);
@@ -816,7 +932,7 @@
       `;
     }
 
-    // ---------- CART LOGIC ----------
+    // ---------- CART ----------
     function totalCombosQty(){
       return COMBOS.reduce((acc, c) => acc + (parseInt(document.getElementById(`qty-${c.id}`)?.value || "0",10) || 0), 0);
     }
@@ -826,14 +942,12 @@
       let newQty = (parseInt(input.value, 10) || 0) + delta;
       if(newQty < 0) newQty = 0;
 
-      // Enforce 1 combo max total
       const isThisCombo = COMBOS.some(c => c.id === id);
       if(isThisCombo && newQty > 1) {
         showAlert("Para mantenerlo simple, el sitio permite solo 1 combo por pedido. Si quieres 2+, lo coordinamos por WhatsApp 🙂");
         newQty = 1;
       }
       if(!isThisCombo && totalCombosQty() > 1) {
-        // safety: if somehow multiple combos exist, normalize
         normalizeCombosToOne();
       }
 
@@ -843,7 +957,6 @@
         const flavorsDiv = document.getElementById(`flavors-${id}`);
         if(flavorsDiv) flavorsDiv.classList.toggle('active', newQty > 0);
 
-        // bind selects change once visible
         if(newQty > 0){
           document.querySelectorAll(`.sel-${id}`).forEach(sel => {
             sel.addEventListener("change", () => {
@@ -857,10 +970,8 @@
     }
 
     function normalizeCombosToOne(){
-      // If there are multiple combos (combo3 and combo5), keep the one with qty>0 and zero others
       const active = COMBOS.filter(c => (parseInt(document.getElementById(`qty-${c.id}`)?.value||"0",10)||0) > 0);
       if(active.length <= 1) return;
-      // keep first
       for(let i=1;i<active.length;i++){
         document.getElementById(`qty-${active[i].id}`).value = 0;
         const flavorsDiv = document.getElementById(`flavors-${active[i].id}`);
@@ -872,13 +983,11 @@
     function updateCartObject() {
       cart = {};
 
-      // Individuals
       INDIVIDUALS.forEach(p => {
         const qty = parseInt(document.getElementById(`qty-${p.id}`)?.value || "0", 10) || 0;
         if(qty > 0) cart[p.id] = { product: p, qty, flavors: [] };
       });
 
-      // Combos (max 1)
       let comboPicked = null;
       COMBOS.forEach(c => {
         const qty = parseInt(document.getElementById(`qty-${c.id}`)?.value || "0", 10) || 0;
@@ -944,7 +1053,7 @@
       summary.innerHTML = html;
     }
 
-    // ---------- FORM LOGIC ----------
+    // ---------- FORM ----------
     function toggleDeliveryFields() {
       const type = document.getElementById('f_type').value;
       const df = document.getElementById('deliveryFields');
@@ -975,14 +1084,12 @@
 
     // ---------- STORAGE ----------
     function saveState(){
-      // Save cart, qtys, flavors, and form
       const qtyMap = {};
       [...INDIVIDUALS, ...COMBOS].forEach(p => {
         const el = document.getElementById(`qty-${p.id}`);
         qtyMap[p.id] = parseInt(el?.value || "0", 10) || 0;
       });
 
-      // Save flavors for combo (if any)
       const flavorsMap = {};
       COMBOS.forEach(c => {
         const sels = document.querySelectorAll(`.sel-${c.id}`);
@@ -1010,7 +1117,6 @@
         if(!raw) return;
         const data = JSON.parse(raw);
 
-        // Restore qty
         if(data?.qtyMap){
           Object.entries(data.qtyMap).forEach(([id, val]) => {
             const el = document.getElementById(`qty-${id}`);
@@ -1018,13 +1124,11 @@
           });
         }
 
-        // Restore combo visibility + flavors
         COMBOS.forEach(c => {
           const qty = parseInt(document.getElementById(`qty-${c.id}`)?.value || "0",10) || 0;
           const flavorsDiv = document.getElementById(`flavors-${c.id}`);
           if(flavorsDiv) flavorsDiv.classList.toggle("active", qty > 0);
 
-          // restore selects
           const saved = data?.flavorsMap?.[c.id];
           if(saved && saved.length){
             const sels = document.querySelectorAll(`.sel-${c.id}`);
@@ -1032,10 +1136,8 @@
           }
         });
 
-        // Enforce single combo rule
         normalizeCombosToOne();
 
-        // Restore form
         if(data?.form){
           document.getElementById('f_name').value = data.form.name || "";
           document.getElementById('f_type').value = data.form.type || "delivery";
@@ -1052,7 +1154,6 @@
 
     // ---------- WHATSAPP ----------
     function openQuickWhatsApp(){
-      // If there is a cart, ask if they want to go to pedido
       const hasItems = Object.keys(cart).length > 0;
       if(hasItems){
         const go = confirm("Tienes productos seleccionados. ¿Quieres ir al pedido para enviarlo?");
@@ -1095,7 +1196,6 @@
         return;
       }
 
-      // Order ID
       const d = new Date();
       const dateStr = `${d.getFullYear().toString().slice(-2)}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
       const timeStr = `${String(d.getHours()).padStart(2,'0')}${String(d.getMinutes()).padStart(2,'0')}`;
