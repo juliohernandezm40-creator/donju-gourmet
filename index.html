@@ -59,7 +59,7 @@
       color: var(--text-main);
       background-color: var(--brand-pastel);
       line-height: 1.5;
-      padding-top: 84px; /* ✅ ajustado por header más alto (logo grande) */
+      padding-top: 84px;
     }
 
     h1, h2, h3, h4 { font-family: var(--font-serif); color: var(--brand-dark); }
@@ -111,7 +111,7 @@
     .btn-wa:hover { background: var(--whatsapp-hover); transform: translateY(-2px); }
     .btn:active { transform: translateY(0); opacity: .98; }
 
-    /* ✅ Botón música */
+    /* Botón música */
     .btn-music {
       border: 1px solid var(--brand-gold);
       background: rgba(194,165,122,.12);
@@ -132,7 +132,7 @@
       backdrop-filter: blur(8px);
       z-index: 1000;
       box-shadow: var(--shadow-sm);
-      height: 84px; /* ✅ más alto para logo grande */
+      height: 84px;
     }
     .header .container {
       display: flex;
@@ -146,7 +146,7 @@
       align-items: center;
       gap: 12px;
       font-family: var(--font-serif);
-      font-size: 1.35rem; /* ✅ un poco más grande */
+      font-size: 1.35rem;
       font-weight: 700;
       color: var(--brand-dark);
       min-width: 0;
@@ -156,12 +156,11 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    /* ✅ Logo más grande */
     .logo-img { height: 56px; width: 56px; border-radius: 50%; object-fit: cover; }
 
     .header-links { display: flex; gap: 10px; align-items: center; }
 
-    /* Banner música (cuando autoplay está bloqueado) */
+    /* Banner música (si autoplay bloqueado) */
     .music-banner{
       position: fixed;
       left: 50%;
@@ -414,6 +413,44 @@
     }
     .floating-cta.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
+    /* ==============================
+       ✅ MASCOTA ANIMADA (DERECHA)
+       ============================== */
+    .mascota {
+      position: fixed;
+      right: 14px;
+      top: 140px; /* base (después el JS la mueve) */
+      width: 120px;
+      z-index: 850; /* debajo del header (1000) y banner música (1100), sobre contenido */
+      pointer-events: none; /* no bloquea clicks */
+      filter: drop-shadow(0 12px 22px rgba(0,0,0,.18));
+      transform: translate3d(0,0,0);
+      will-change: transform;
+      opacity: .95;
+    }
+    .mascota img{
+      width: 100%;
+      height: auto;
+      display:block;
+    }
+
+    /* pirueta suave */
+    .mascota.spin {
+      animation: mascotSpin 650ms ease-in-out;
+    }
+    @keyframes mascotSpin {
+      0%   { transform: translate3d(var(--mx,0px), var(--my,0px), 0) rotate(0deg) scale(1); }
+      45%  { transform: translate3d(var(--mx,0px), var(--my,0px), 0) rotate(14deg) scale(1.02); }
+      80%  { transform: translate3d(var(--mx,0px), var(--my,0px), 0) rotate(-10deg) scale(1.01); }
+      100% { transform: translate3d(var(--mx,0px), var(--my,0px), 0) rotate(0deg) scale(1); }
+    }
+
+    /* Respeta reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      .mascota { display:none !important; }
+    }
+
+    /* Móvil: más pequeña y más arriba para no tapar */
     @media (max-width: 768px) {
       body { padding-top: 84px; }
       .hero-title { font-size: 2.05rem; }
@@ -421,18 +458,29 @@
       .checkout-section { padding: 20px; }
       .header-links .btn span { display: none; }
       .header-links .btn { padding: 10px 12px; }
+
+      .mascota{
+        width: 88px;
+        right: 8px;
+        opacity: .9;
+      }
     }
   </style>
 </head>
 
 <body>
-  <!-- 🎵 AUDIO (sube tu archivo como musica.mp3 en la raíz del repo) -->
+  <!-- 🎵 AUDIO (opcional: sube musica.mp3 si quieres música) -->
   <audio id="bgMusic" src="musica.mp3" preload="auto" loop></audio>
 
-  <!-- Banner si el autoplay está bloqueado -->
+  <!-- Banner si autoplay música bloqueado -->
   <div class="music-banner" id="musicBanner">
     <p>🎵 Música disponible. Toca para activarla.</p>
     <button class="btn btn-music" id="musicBannerBtn" type="button">Activar música</button>
+  </div>
+
+  <!-- ✅ Mascota (archivo: mascota.png) -->
+  <div class="mascota" id="mascota" aria-hidden="true">
+    <img src="mascota.png" alt="Mascota DonJu" onerror="this.style.display='none'">
   </div>
 
   <!-- HEADER -->
@@ -445,7 +493,6 @@
       </a>
 
       <div class="header-links">
-        <!-- Botón música ON/OFF -->
         <button type="button" class="btn btn-music" id="musicToggleBtn" aria-label="Música">
           <span id="musicToggleText">Música</span>
         </button>
@@ -633,7 +680,8 @@
     function fallbackImg(label){
       const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500'>
         <rect width='100%' height='100%' fill='#F0EEE9'/>
-        <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Inter, Arial' fill='#73706D' font-size='28'>${label}</text>
+        <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+              font-family='Inter, Arial' fill='#73706D' font-size='28'>${label}</text>
       </svg>`;
       return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
     }
@@ -662,6 +710,11 @@
     let currentSlide = 0;
     let carouselInterval = null;
 
+    // Mascota state
+    let lastSpinAt = 0;
+    let targetY = 0;
+    let currentY = 0;
+
     // ---------- DOM READY ----------
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("year").textContent = new Date().getFullYear();
@@ -671,10 +724,11 @@
         el.addEventListener("click", () => el.classList.toggle("active"));
       });
 
-      // Buttons
+      // Carousel buttons
       document.getElementById("prevBtn").addEventListener("click", prevSlide);
       document.getElementById("nextBtn").addEventListener("click", nextSlide);
 
+      // WhatsApp
       document.getElementById("waQuickBtn").addEventListener("click", openQuickWhatsApp);
 
       // Instagram deep link + fallback
@@ -710,8 +764,15 @@
       toggleDeliveryFields();
       renderCartSummary();
 
-      // 🎵 Música
+      // Música
       initMusic();
+
+      // Mascota
+      initMascota();
+      window.addEventListener("scroll", onScrollMascota, { passive: true });
+      window.addEventListener("resize", () => onScrollMascota(), { passive: true });
+      onScrollMascota();
+      requestAnimationFrame(mascotaLoop);
     });
 
     // ---------- MUSIC ----------
@@ -722,11 +783,10 @@
       const banner = document.getElementById("musicBanner");
       const bannerBtn = document.getElementById("musicBannerBtn");
 
-      // Volumen suave por defecto (ajústalo si quieres)
       audio.volume = 0.35;
 
       let enabled = localStorage.getItem(MUSIC_KEY);
-      if(enabled === null) enabled = "1"; // por defecto: ON
+      if(enabled === null) enabled = "1";
       enabled = enabled === "1";
 
       function setUI(){
@@ -741,7 +801,6 @@
           localStorage.setItem(MUSIC_KEY, "1");
           setUI();
         }catch(e){
-          // Autoplay bloqueado
           banner.style.display = "flex";
           enabled = false;
           localStorage.setItem(MUSIC_KEY, "0");
@@ -754,7 +813,6 @@
         audio.currentTime = 0;
       }
 
-      // Intentar autoplay si está habilitado
       setUI();
       if(enabled){
         tryPlay();
@@ -763,7 +821,6 @@
         banner.style.display = "none";
       }
 
-      // Toggle
       toggleBtn.addEventListener("click", async () => {
         if(enabled){
           enabled = false;
@@ -776,17 +833,14 @@
         }
       });
 
-      // Banner button
       bannerBtn.addEventListener("click", async () => {
         await tryPlay();
       });
 
-      // Si el usuario vuelve a la pestaña, reintentar si está ON
       document.addEventListener("visibilitychange", () => {
         if(document.visibilityState === "visible"){
           const on = localStorage.getItem(MUSIC_KEY) === "1";
           if(on && audio.paused){
-            // intentar play (puede o no)
             audio.play().catch(()=>{});
           }
         }
@@ -844,7 +898,6 @@
     function updateCarousel(){
       const car = document.getElementById("carousel");
       car.style.transform = `translateX(-${currentSlide * 100}%)`;
-
       const dots = document.querySelectorAll(".dot");
       dots.forEach((d, i) => d.classList.toggle("active", i === currentSlide));
     }
@@ -1246,6 +1299,67 @@
       const checkoutTop = checkout.getBoundingClientRect().top;
       const show = window.scrollY > 420 && checkoutTop > window.innerHeight * 0.5;
       cta.classList.toggle('visible', show);
+    }
+
+    // ---------- MASCOTA (scroll follow + pirueta suave) ----------
+    function initMascota(){
+      const el = document.getElementById("mascota");
+      if(!el) return;
+
+      // init vars
+      currentY = 0;
+      targetY = 0;
+
+      // si imagen no existe, el onerror la esconde
+      el.style.setProperty("--mx", "0px");
+      el.style.setProperty("--my", "0px");
+    }
+
+    function onScrollMascota(){
+      const el = document.getElementById("mascota");
+      if(!el) return;
+
+      // Base: seguirá el scroll pero con límites
+      const viewportH = window.innerHeight || 800;
+      const minY = 120;                 // no choca con header
+      const maxY = viewportH - 220;     // no tapa botones abajo
+      const scroll = window.scrollY || 0;
+
+      // target: 120 + (scroll * factor) pero limitado al viewport
+      const raw = minY + (scroll * 0.18);
+      targetY = Math.max(minY, Math.min(maxY, raw));
+
+      // Pirueta cada cierto scroll (sutil)
+      const now = Date.now();
+      if(now - lastSpinAt > 2200){
+        const step = Math.floor(scroll / 700); // cada ~700px
+        if(step !== el.__lastStep){
+          el.__lastStep = step;
+          lastSpinAt = now;
+          el.classList.remove("spin");
+          // reflow para reiniciar animación
+          void el.offsetWidth;
+          el.classList.add("spin");
+        }
+      }
+    }
+
+    function mascotaLoop(){
+      const el = document.getElementById("mascota");
+      if(el){
+        // easing suave hacia targetY
+        const ease = 0.08;
+        currentY = currentY + (targetY - currentY) * ease;
+
+        // pequeño bamboleo
+        const t = Date.now() / 1000;
+        const bob = Math.sin(t * 1.8) * 6; // px
+
+        // guardamos my para la animación spin (keyframes)
+        el.style.setProperty("--my", `${currentY + bob}px`);
+        el.style.transform = `translate3d(0, ${currentY + bob}px, 0)`;
+      }
+      requestAnimationFrame(mascotaLoop);
     }
   </script>
 </body>
